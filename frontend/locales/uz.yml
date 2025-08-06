@@ -1,6 +1,9 @@
 button:
   about: Haqida
   back: Orqaga
+  cancel: Bekor qilish
+  close: Yopish
+  save: Saqlash
   go: Kettik
   home: Bosh sahifa
   toggle_dark: Qorong'i rejimga o'tish
@@ -61,6 +64,7 @@ categories:
   status: Status
   created_at: Yaratilgan sana
   actions: Amallar
+  enter_name: Kategoriya nomini kiriting
   no_categories: Kategoriyalar yo'q
   no_categories_description: Sizda hali kategoriyalar yo'q. Birinchi kategoriyani yarating.
   add_first_category: Birinchi kategoriyani qo'shish

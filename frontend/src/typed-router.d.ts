@@ -21,6 +21,7 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/[...all]': RouteRecordInfo<'/[...all]', '/:all(.*)', { all: ParamValue<true> }, { all: ParamValue<false> }>,
     '/informations/categories': RouteRecordInfo<'/informations/categories', '/informations/categories', Record<never, never>, Record<never, never>>,
+    '/informations/dialogs/categories/add-or-edit-dialog': RouteRecordInfo<'/informations/dialogs/categories/add-or-edit-dialog', '/informations/dialogs/categories/add-or-edit-dialog', Record<never, never>, Record<never, never>>,
     '/informations/products': RouteRecordInfo<'/informations/products', '/informations/products', Record<never, never>, Record<never, never>>,
     '/informations/suppliers': RouteRecordInfo<'/informations/suppliers', '/informations/suppliers', Record<never, never>, Record<never, never>>,
     '/login': RouteRecordInfo<'/login', '/login', Record<never, never>, Record<never, never>>,

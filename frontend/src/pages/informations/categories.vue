@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import type { ICategory } from '~/types/information'
 import { computed, onMounted, ref } from 'vue'
 import { useCategoriesStore } from '~/stores/categories'
+import AddOrEditDialog from './dialogs/categories/add-or-edit-dialog.vue'
 
 defineOptions({
   name: 'CategoriesPage',
 })
 
 const categoriesStore = useCategoriesStore()
-
+const dialogRef = ref<InstanceType<typeof AddOrEditDialog> | null>(null)
 // Reactive data
 const searchQuery = ref('')
 const currentPage = ref(1)
-const itemsPerPage = ref(10)
+const itemsPerPage = ref(50)
 const paginationData = ref({
   currentPage: 1,
   totalPages: 1,
@@ -29,8 +31,6 @@ const columns = ref([
   { key: 'actions', label: 'table.columns.actions', width: '100px', translatable: true },
 ])
 
-// Computed properties
-const loading = computed(() => categoriesStore.loading)
 const categories = computed(() => categoriesStore.categories)
 
 // Methods
@@ -68,6 +68,15 @@ function onSearch() {
   fetchCategories()
 }
 
+// Dialog methods
+function openAddDialog() {
+  dialogRef.value?.open()
+}
+
+function openEditDialog(category: ICategory) {
+  dialogRef.value?.open(category)
+}
+
 // Lifecycle
 onMounted(() => {
   fetchCategories()
@@ -97,6 +106,7 @@ onMounted(() => {
         type="button"
         prepend-icon="ri-add-line"
         color="primary"
+        @click="openAddDialog"
       >
         {{ $t('categories.add_category') }}
       </MButton>
@@ -105,7 +115,6 @@ onMounted(() => {
     <MDataTable
       :columns="columns"
       :data="categories"
-      :loading="loading"
       :pagination="paginationData"
       @page-change="onPageChange"
     >
@@ -118,6 +127,7 @@ onMounted(() => {
             icon-button
             icon="ri-edit-line"
             color="secondary"
+            @click="openEditDialog(row as ICategory)"
           />
           <MSwitch
             v-model="row.active"
@@ -125,6 +135,9 @@ onMounted(() => {
         </div>
       </template>
     </MDataTable>
+
+    <!-- Add/Edit Dialog -->
+    <AddOrEditDialog ref="dialogRef" />
   </MainPage>
 </template>
 

@@ -62,13 +62,13 @@ export const useCategoriesStore = defineStore('categories', {
         this.saving = false
       }
     },
-    async updateCategory(id: number, categoryData: ICategory) {
+    async updateCategory(categoryData: ICategory) {
       try {
         this.saving = true
-        const response = await http.put(`/categories/${id}`, categoryData)
+        const response = await http.put(`/categories/${categoryData.id}`, categoryData)
         const updatedCategory = response.data.data || response.data
 
-        const index = this.categories.findIndex(c => c.id === id)
+        const index = this.categories.findIndex(c => c.id === categoryData.id)
         if (index !== -1) {
           this.categories[index] = updatedCategory
         }

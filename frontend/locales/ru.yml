@@ -1,6 +1,9 @@
 button:
   about: О шаблоне
   back: Назад
+  cancel: Отмена
+  close: Закрыть
+  save: Сохранить
   go: Перейти
   home: Главная
   toggle_dark: Включить темный режим
@@ -61,6 +64,7 @@ categories:
   status: Статус
   created_at: Дата создания
   actions: Действия
+  enter_name: Введите название категории
   no_categories: Нет категорий
   no_categories_description: У вас пока нет категорий. Создайте первую категорию.
   add_first_category: Добавить первую категорию
