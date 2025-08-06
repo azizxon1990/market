@@ -1,0 +1,120 @@
+button:
+  about: О шаблоне
+  back: Назад
+  go: Перейти
+  home: Главная
+  toggle_dark: Включить темный режим
+  toggle_langs: Сменить язык
+  login: Войти
+  logout: Выйти
+  register: Регистрация
+  search: Поиск
+  add_to_cart: Добавить в корзину
+  buy_now: Купить сейчас
+  view_details: Подробнее
+
+nav:
+  home: Главная
+  information: Информация
+  categories: Категории
+  products: Товары
+  suppliers: Поставщики
+  cart: Корзина
+  profile: Профиль
+  about: О нас
+  orders: Заказы
+  settings: Настройки
+
+home:
+  title: Маркет - Ваш онлайн магазин
+  subtitle: Найдите лучшие товары по лучшим ценам
+  welcome: Добро пожаловать!
+  featured_products: Рекомендуемые товары
+  popular_categories: Популярные категории
+  new_arrivals: Новинки
+  best_sellers: Хиты продаж
+
+intro:
+  desc: Самостоятельный начальный шаблон Vite
+  dynamic-route: Демо динамического маршрута
+  hi: Привет, {name}!
+  whats-your-name: Как тебя зовут?
+
+auth:
+  login: Вход в систему
+  register: Регистрация
+  email: Email
+  password: Пароль
+  confirm_password: Подтвердите пароль
+  forgot_password: Забыли пароль?
+  remember_me: Запомнить меня
+
+categories:
+  title: Категории
+  description: Управление категориями товаров
+  search_placeholder: Поиск категорий...
+  all_statuses: Все статусы
+  active: Активные
+  inactive: Неактивные
+  add_category: Добавить категорию
+  name: Название
+  status: Статус
+  created_at: Дата создания
+  actions: Действия
+  no_categories: Нет категорий
+  no_categories_description: У вас пока нет категорий. Создайте первую категорию.
+  add_first_category: Добавить первую категорию
+  showing: Показано
+  to: до
+  of: из
+  results: результатов
+  previous: Предыдущая
+  next: Следующая
+  edit_category: Редактировать категорию
+  cancel: Отмена
+  create: Создать
+  update: Обновить
+  name_placeholder: Введите название категории
+  description_placeholder: Введите описание категории
+
+common:
+  loading: Загрузка...
+  error: Произошла ошибка
+  success: Успешно!
+  price: Цена
+  quantity: Количество
+  total: Итого
+  currency: сум
+
+pagination:
+  showing: Показано
+  to: до
+  of: из
+  previous: Предыдущая
+  next: Следующая
+  navigation: Навигация по таблице
+
+table:
+  no_data_title: Нет данных
+  no_data_description: В настоящее время нет элементов для отображения.
+  loading: Загрузка...
+  columns:
+    id: ID
+    name: Название
+    status: Статус
+    actions: Действия
+    created_at: Дата создания
+    updated_at: Дата обновления
+    description: Описание
+    active: Активный
+    inactive: Неактивный
+    price: Цена
+    quantity: Количество
+    category: Категория
+    supplier: Поставщик
+    code: Код
+    email: Email
+    phone: Телефон
+    address: Адрес
+
+not-found: Не найден

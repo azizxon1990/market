@@ -1,0 +1,19 @@
+{
+  "id": "supermarket-environment-id",
+  "name": "Supermarket Environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3001",
+      "description": "Base URL for the API server",
+      "enabled": true
+    },
+    {
+      "key": "token",
+      "value": "",
+      "description": "JWT authentication token (auto-populated after login)",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

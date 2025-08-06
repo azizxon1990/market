@@ -1,0 +1,120 @@
+button:
+  about: Haqida
+  back: Orqaga
+  go: Kettik
+  home: Bosh sahifa
+  toggle_dark: Qorong'i rejimga o'tish
+  toggle_langs: Tilni o'zgartirish
+  login: Kirish
+  logout: Chiqish
+  register: Ro'yxatdan o'tish
+  search: Qidirish
+  add_to_cart: Savatga qo'shish
+  buy_now: Hoziroq sotib olish
+  view_details: Batafsil ko'rish
+
+nav:
+  home: Bosh sahifa
+  information: Ma'lumotlar
+  categories: Kategoriyalar
+  products: Mahsulotlar
+  suppliers: Yetkazib beruvchilar
+  cart: Savat
+  profile: Profil
+  about: Haqida
+  orders: Buyurtmalar
+  settings: Sozlamalar
+
+home:
+  title: Bozor - Sizning onlayn do'koningiz
+  subtitle: Eng yaxshi mahsulotlarni eng yaxshi narxlarda toping
+  welcome: Xush kelibsiz!
+  featured_products: Tavsiya etilgan mahsulotlar
+  popular_categories: Mashhur kategoriyalar
+  new_arrivals: Yangi kelganlar
+  best_sellers: Eng ko'p sotiladigan
+
+intro:
+  desc: O'ylangan boshlang'ich Vite shabloni
+  dynamic-route: Dynamic route demo'si
+  hi: Assalomu alaykum, {name}!
+  whats-your-name: Ismingiz nima?
+
+auth:
+  login: Tizimga kirish
+  register: Ro'yxatdan o'tish
+  email: Email
+  password: Parol
+  confirm_password: Parolni tasdiqlang
+  forgot_password: Parolni unutdingizmi?
+  remember_me: Meni eslab qol
+
+categories:
+  title: Kategoriyalar
+  description: Mahsulot kategoriyalarini boshqarish
+  search_placeholder: Kategoriyalarni qidirish...
+  all_statuses: Barcha statuslar
+  active: Faol
+  inactive: Nofaol
+  add_category: Kategoriya qo'shish
+  name: Nomi
+  status: Status
+  created_at: Yaratilgan sana
+  actions: Amallar
+  no_categories: Kategoriyalar yo'q
+  no_categories_description: Sizda hali kategoriyalar yo'q. Birinchi kategoriyani yarating.
+  add_first_category: Birinchi kategoriyani qo'shish
+  showing: Ko'rsatilmoqda
+  to: dan
+  of: dan
+  results: natija
+  previous: Oldingi
+  next: Keyingi
+  edit_category: Kategoriyani tahrirlash
+  cancel: Bekor qilish
+  create: Yaratish
+  update: Yangilash
+  name_placeholder: Kategoriya nomini kiriting
+  description_placeholder: Kategoriya tavsifini kiriting
+
+common:
+  loading: Yuklanmoqda...
+  error: Xatolik yuz berdi
+  success: Muvaffaqiyatli!
+  price: Narx
+  quantity: Miqdor
+  total: Jami
+  currency: so'm
+
+pagination:
+  showing: Ko'rsatilmoqda
+  to: dan
+  of: dan
+  previous: Oldingi
+  next: Keyingi
+  navigation: Jadval navigatsiyasi
+
+table:
+  no_data_title: Ma'lumotlar yo'q
+  no_data_description: Hozirda ko'rsatish uchun elementlar yo'q.
+  loading: Yuklanmoqda...
+  columns:
+    id: ID
+    name: Nomi
+    status: Status
+    actions: Amallar
+    created_at: Yaratilgan sana
+    updated_at: Yangilangan sana
+    description: Tavsif
+    active: Faol
+    inactive: Nofaol
+    price: Narx
+    quantity: Miqdor
+    category: Kategoriya
+    supplier: Yetkazib beruvchi
+    code: Kod
+    email: Email
+    phone: Telefon
+    address: Manzil
+
+not-found: Topilmadi

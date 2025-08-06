@@ -1,0 +1,809 @@
+{
+  "info": {
+    "name": "Supermarket API Collection v2.0",
+    "description": "Complete API collection for Supermarket Backend with improved test scripts and environment management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "12345678-1234-1234-1234-123456789012",
+    "version": {
+      "major": 2,
+      "minor": 0,
+      "patch": 0
+    }
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request script",
+          "console.log('Making request to:', pm.request.url.toString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "pm.test('Response time is less than 2000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+          "});",
+          "",
+          "pm.test('Response has valid JSON', function () {",
+          "    pm.response.to.be.json;",
+          "});"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "description": "Authentication endpoints for login and logout",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains token', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('token');",
+                  "    pm.expect(responseJson).to.have.property('user');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const responseJson = pm.response.json();",
+                  "    if (responseJson.token) {",
+                  "        pm.collectionVariables.set('token', responseJson.token);",
+                  "        pm.test('Token saved to collection variables', function () {",
+                  "            pm.expect(pm.collectionVariables.get('token')).to.not.be.undefined;",
+                  "        });",
+                  "        console.log('🔑 Token saved successfully');",
+                  "    }",
+                  "}",
+                  "",
+                  "pm.test('User object does not contain password', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    if (responseJson.user) {",
+                  "        pm.expect(responseJson.user).to.not.have.property('password');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"user\",\n  \"password\": \"pass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Authenticate user and receive JWT token"
+          }
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Logout message received', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson.message).to.include('Logged out');",
+                  "});",
+                  "",
+                  "// Clear token from collection variables",
+                  "pm.collectionVariables.set('token', '');",
+                  "console.log('🚪 Token cleared from collection variables');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Logout user (client-side token invalidation)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Users",
+      "description": "User management endpoints",
+      "item": [
+        {
+          "name": "Get All Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response is an array', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Users do not contain passwords', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    responseJson.forEach(user => {",
+                  "        pm.expect(user).to.not.have.property('password');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            },
+            "description": "Retrieve all users in the system"
+          }
+        },
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('User created successfully', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('id');",
+                  "    pm.expect(responseJson).to.have.property('username');",
+                  "    pm.expect(responseJson).to.not.have.property('password');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organization_id\": 1,\n  \"full_name\": \"John\",\n  \"username\": \"john_{{$randomInt}}\",\n  \"password\": \"123456\",\n  \"active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            },
+            "description": "Create a new user"
+          }
+        },
+        {
+          "name": "Get User By ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('User returned successfully', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('id');",
+                  "    pm.expect(responseJson).to.not.have.property('password');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            },
+            "description": "Retrieve a specific user by ID"
+          }
+        },
+        {
+          "name": "Update User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('User updated successfully', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('id');",
+                  "    pm.expect(responseJson).to.not.have.property('password');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organization_id\": 1,\n  \"full_name\": \"John Updated\",\n  \"username\": \"john_updated\",\n  \"active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            },
+            "description": "Update an existing user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📂 Categories",
+      "description": "Category management endpoints",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/categories", "host": ["{{base_url}}"], "path": ["categories"]}
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Category {{$randomInt}}\",\n  \"parent_id\": null,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/categories", "host": ["{{base_url}}"], "path": ["categories"]}
+          }
+        },
+        {
+          "name": "Get Category By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/categories/1", "host": ["{{base_url}}"], "path": ["categories", "1"]}
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Category\",\n  \"parent_id\": null,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/categories/1", "host": ["{{base_url}}"], "path": ["categories", "1"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Products",
+      "description": "Product management endpoints",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/products", "host": ["{{base_url}}"], "path": ["products"]}
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Product {{$randomInt}}\",\n  \"category_id\": 1,\n  \"unit\": \"kg\",\n  \"weight_based\": false,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/products", "host": ["{{base_url}}"], "path": ["products"]}
+          }
+        },
+        {
+          "name": "Get Product By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/products/1", "host": ["{{base_url}}"], "path": ["products", "1"]}
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Product\",\n  \"category_id\": 1,\n  \"unit\": \"pcs\",\n  \"weight_based\": false,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/products/1", "host": ["{{base_url}}"], "path": ["products", "1"]}
+          }
+        },
+        {
+          "name": "Get Active Products",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/products/active", "host": ["{{base_url}}"], "path": ["products", "active"]}
+          }
+        },
+        {
+          "name": "Search Active Products",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {
+              "raw": "{{base_url}}/products/search?query=apple&category_id=1",
+              "host": ["{{base_url}}"],
+              "path": ["products", "search"],
+              "query": [
+                {"key": "query", "value": "apple", "description": "Search term"},
+                {"key": "category_id", "value": "1", "description": "Category filter", "disabled": true}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Organizations",
+      "description": "Organization management endpoints",
+      "item": [
+        {
+          "name": "Get All Organizations",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/organizations", "host": ["{{base_url}}"], "path": ["organizations"]}
+          }
+        },
+        {
+          "name": "Create Organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Org {{$randomInt}}\",\n  \"parent_id\": null,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/organizations", "host": ["{{base_url}}"], "path": ["organizations"]}
+          }
+        },
+        {
+          "name": "Get Organization By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/organizations/1", "host": ["{{base_url}}"], "path": ["organizations", "1"]}
+          }
+        },
+        {
+          "name": "Update Organization",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Organization\",\n  \"parent_id\": null,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/organizations/1", "host": ["{{base_url}}"], "path": ["organizations", "1"]}
+          }
+        },
+        {
+          "name": "Get Active Organizations",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/organizations/active", "host": ["{{base_url}}"], "path": ["organizations", "active"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚚 Suppliers",
+      "description": "Supplier management endpoints",
+      "item": [
+        {
+          "name": "Get All Suppliers",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/suppliers", "host": ["{{base_url}}"], "path": ["suppliers"]}
+          }
+        },
+        {
+          "name": "Create Supplier",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Supplier {{$randomInt}}\",\n  \"address\": \"Tashkent\",\n  \"phone_number\": \"+998901234567\",\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/suppliers", "host": ["{{base_url}}"], "path": ["suppliers"]}
+          }
+        },
+        {
+          "name": "Get Supplier By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/suppliers/1", "host": ["{{base_url}}"], "path": ["suppliers", "1"]}
+          }
+        },
+        {
+          "name": "Update Supplier",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Supplier\",\n  \"address\": \"Samarkand\",\n  \"phone_number\": \"+998901234567\",\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/suppliers/1", "host": ["{{base_url}}"], "path": ["suppliers", "1"]}
+          }
+        },
+        {
+          "name": "Get Active Suppliers",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/suppliers/active", "host": ["{{base_url}}"], "path": ["suppliers", "active"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏪 Warehouses",
+      "description": "Warehouse management endpoints",
+      "item": [
+        {
+          "name": "Get All Warehouses",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/warehouses", "host": ["{{base_url}}"], "path": ["warehouses"]}
+          }
+        },
+        {
+          "name": "Create Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Warehouse {{$randomInt}}\",\n  \"address\": \"Tashkent\",\n  \"organization_id\": 1,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/warehouses", "host": ["{{base_url}}"], "path": ["warehouses"]}
+          }
+        },
+        {
+          "name": "Get Warehouse By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/warehouses/1", "host": ["{{base_url}}"], "path": ["warehouses", "1"]}
+          }
+        },
+        {
+          "name": "Update Warehouse",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Warehouse\",\n  \"address\": \"Tashkent Industrial\",\n  \"organization_id\": 1,\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/warehouses/1", "host": ["{{base_url}}"], "path": ["warehouses", "1"]}
+          }
+        },
+        {
+          "name": "Get Warehouses By Organization",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/warehouses/organization/1", "host": ["{{base_url}}"], "path": ["warehouses", "organization", "1"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Cost Types",
+      "description": "Cost type management endpoints",
+      "item": [
+        {
+          "name": "Get All Cost Types",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/cost-types", "host": ["{{base_url}}"], "path": ["cost-types"]}
+          }
+        },
+        {
+          "name": "Create Cost Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Cost {{$randomInt}}\",\n  \"parent_id\": null,\n  \"code\": \"TC{{$randomInt}}\",\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/cost-types", "host": ["{{base_url}}"], "path": ["cost-types"]}
+          }
+        },
+        {
+          "name": "Get Cost Type By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/cost-types/1", "host": ["{{base_url}}"], "path": ["cost-types", "1"]}
+          }
+        },
+        {
+          "name": "Update Cost Type",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Cost Type\",\n  \"parent_id\": null,\n  \"code\": \"UPDATED\",\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/cost-types/1", "host": ["{{base_url}}"], "path": ["cost-types", "1"]}
+          }
+        },
+        {
+          "name": "Get Active Cost Types",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/cost-types/active", "host": ["{{base_url}}"], "path": ["cost-types", "active"]}
+          }
+        },
+        {
+          "name": "Update Cost Type Organizations",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"organization_ids\": [1, 2, 3]\n}"},
+            "url": {"raw": "{{base_url}}/cost-types/1/organizations", "host": ["{{base_url}}"], "path": ["cost-types", "1", "organizations"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "💳 Payment Types",
+      "description": "Payment type management endpoints",
+      "item": [
+        {
+          "name": "Get All Payment Types",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/payment-types", "host": ["{{base_url}}"], "path": ["payment-types"]}
+          }
+        },
+        {
+          "name": "Create Payment Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Payment {{$randomInt}}\",\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/payment-types", "host": ["{{base_url}}"], "path": ["payment-types"]}
+          }
+        },
+        {
+          "name": "Get Payment Type By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/payment-types/1", "host": ["{{base_url}}"], "path": ["payment-types", "1"]}
+          }
+        },
+        {
+          "name": "Update Payment Type",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Payment Type\",\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/payment-types/1", "host": ["{{base_url}}"], "path": ["payment-types", "1"]}
+          }
+        },
+        {
+          "name": "Get Active Payment Types",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/payment-types/active", "host": ["{{base_url}}"], "path": ["payment-types", "active"]}
+          }
+        },
+        {
+          "name": "Update Payment Type Organizations",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"organization_ids\": [1, 2, 3]\n}"},
+            "url": {"raw": "{{base_url}}/payment-types/1/organizations", "host": ["{{base_url}}"], "path": ["payment-types", "1", "organizations"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔗 Other Sources",
+      "description": "Other source management endpoints",
+      "item": [
+        {
+          "name": "Get All Other Sources",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/other-sources", "host": ["{{base_url}}"], "path": ["other-sources"]}
+          }
+        },
+        {
+          "name": "Create Other Source",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Test Other Source {{$randomInt}}\",\n  \"active\": true\n}"},
+            "url": {"raw": "{{base_url}}/other-sources", "host": ["{{base_url}}"], "path": ["other-sources"]}
+          }
+        },
+        {
+          "name": "Get Other Source By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{base_url}}/other-sources/1", "host": ["{{base_url}}"], "path": ["other-sources", "1"]}
+          }
+        },
+        {
+          "name": "Update Other Source",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Other Source\",\n  \"active\": false\n}"},
+            "url": {"raw": "{{base_url}}/other-sources/1", "host": ["{{base_url}}"], "path": ["other-sources", "1"]}
+          }
+        }
+      ]
+    }
+  ]
+}
