@@ -31,6 +31,7 @@ app.use('/warehouses', routes.warehouseRoutes);
 app.use('/cost-types', routes.costTypeRoutes);
 app.use('/payment-types', routes.paymentTypeRoutes);
 app.use('/other-sources', routes.otherSourceRoutes);
+app.use('/invoices', routes.invoiceRoutes);
 
 
 

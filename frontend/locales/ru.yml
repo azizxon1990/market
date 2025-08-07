@@ -15,6 +15,10 @@ button:
   add_to_cart: Добавить в корзину
   buy_now: Купить сейчас
   view_details: Подробнее
+  view: Просмотр
+  edit: Редактировать
+  delete: Удалить
+  clear_filters: Очистить фильтры
 
 nav:
   home: Главная
@@ -27,6 +31,11 @@ nav:
   payment_types: Типы платежей
   other_sources: Другие источники
   cost_types: Типы расходов
+  operations: Операции
+  input_products_supplier: Поступление от поставщиков
+  output_products_supplier: Отпуск к поставщикам
+  input_products_other_sources: Поступление из других источников
+  output_products_other_sources: Отпуск в другие источники
   cart: Корзина
   profile: Профиль
   about: О нас
@@ -194,6 +203,7 @@ table:
   no_data_title: Нет данных
   no_data_description: В настоящее время нет элементов для отображения.
   loading: Загрузка...
+  showing_results: Показано {start} - {end} из {total} результатов
   columns:
     id: ID
     name: Название
@@ -218,5 +228,19 @@ table:
     email: Email
     phone: Телефон
     address: Адрес
+    invoice_number: Номер накладной
+    date: Дата
+    total_amount: Общая сумма
+
+invoices:
+  title: Накладные
+  supplier_input_title: Поступление товаров от поставщиков
+  search_placeholder: Поиск по номеру накладной или описанию...
+  select_warehouse: Выберите склад
+  select_supplier: Выберите поставщика
+  start_date: Дата с
+  end_date: Дата по
+  create_invoice: Создать накладную
+  confirm_delete: Вы уверены, что хотите удалить эту накладную?
 
 not-found: Не найден

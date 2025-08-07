@@ -59,6 +59,34 @@ const navigations = [
       },
     ],
   },
+  {
+    name: 'nav.operations',
+    to: '/operations',
+    icon: 'ri-settings-line',
+    children: [
+      {
+        name: 'nav.input_products_supplier',
+        to: '/operations/supplier-invoices/input',
+        icon: 'ri-download-line',
+      },
+      {
+        name: 'nav.output_products_supplier',
+        to: '/operations/supplier-invoices/output',
+        icon: 'ri-upload-line',
+      },
+      {
+        name: 'nav.input_products_other_sources',
+        to: '/operations/other-sources-invoices/input',
+        icon: 'ri-download-2-line',
+      },
+      {
+        name: 'nav.output_products_other_sources',
+        to: '/operations/other-sources-invoices/output',
+        icon: 'ri-upload-2-line',
+      },
+    ],
+  },
+
 ]
 
 function toggleSidebar() {

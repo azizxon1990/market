@@ -123,3 +123,65 @@ export const defaultCostType: ICostType = {
   name: '',
   active: true,
 }
+
+export interface IUser {
+  id: number
+  username: string
+  first_name?: string
+  last_name?: string
+  full_name?: string
+  organization_id?: number
+  active?: boolean
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface IInvoiceItem {
+  id?: number
+  invoice_id?: number
+  product_id: number
+  quantity: number
+  price: number
+  discount_percentage?: number
+  discount_amount?: number
+  exchange_rate?: number
+  product?: IProduct
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface IInvoice {
+  id?: number
+  invoice_number?: string
+  invoice_date: string
+  warehouse_id: number
+  supplier_id?: number
+  other_source_id?: number
+  total_amount?: number
+  description?: string
+  user_id?: number
+  warehouse?: IWarehouse
+  supplier?: ISupplier
+  otherSource?: IOtherSource
+  user?: IUser
+  items?: IInvoiceItem[]
+  createdAt?: string
+  updatedAt?: string
+}
+
+export const defaultInvoice: IInvoice = {
+  invoice_date: new Date().toISOString().split('T')[0],
+  warehouse_id: 0,
+  supplier_id: undefined,
+  other_source_id: undefined,
+  description: '',
+  items: [],
+}
+
+export const defaultInvoiceItem: IInvoiceItem = {
+  product_id: 0,
+  quantity: 1,
+  price: 0,
+  discount_percentage: 0,
+  discount_amount: 0,
+}

@@ -15,6 +15,10 @@ button:
   add_to_cart: Savatga qo'shish
   buy_now: Hoziroq sotib olish
   view_details: Batafsil ko'rish
+  view: Ko'rish
+  edit: Tahrirlash
+  delete: O'chirish
+  clear_filters: Filtrlarni tozalash
 
 nav:
   home: Bosh sahifa
@@ -27,6 +31,11 @@ nav:
   payment_types: To'lov turlari
   other_sources: Boshqa manbalar
   cost_types: Xarajat turlari
+  operations: Operatsiyalar
+  input_products_supplier: Yetkazib beruvchilardan kelish
+  output_products_supplier: Yetkazib beruvchilarga chiqish
+  input_products_other_sources: Boshqa manbalardan kelish
+  output_products_other_sources: Boshqa manbalarga chiqish
   cart: Savat
   profile: Profil
   about: Haqida
@@ -180,6 +189,7 @@ table:
   no_data_title: Ma'lumotlar yo'q
   no_data_description: Hozirda ko'rsatish uchun elementlar yo'q.
   loading: Yuklanmoqda...
+  showing_results: "{start} - {end} dan {total} ta natija ko'rsatilmoqda"
   columns:
     id: ID
     name: Nomi
@@ -205,5 +215,19 @@ table:
     email: Email
     phone: Telefon
     address: Manzil
+    invoice_number: Hujjat raqami
+    date: Sana
+    total_amount: Umumiy summa
+
+invoices:
+  title: Hujjatlar
+  supplier_input_title: Yetkazib beruvchilardan tovar kelishi
+  search_placeholder: Hujjat raqami yoki tavsif bo'yicha qidirish...
+  select_warehouse: Omborni tanlang
+  select_supplier: Yetkazib beruvchini tanlang
+  start_date: Sana boshidan
+  end_date: Sana oxirigacha
+  create_invoice: Hujjat yaratish
+  confirm_delete: Ushbu hujjatni o'chirishni xohlaysizmi?
 
 not-found: Topilmadi

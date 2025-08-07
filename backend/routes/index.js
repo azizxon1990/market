@@ -8,6 +8,7 @@ const warehouseRoutes = require('./warehouseRoutes');
 const costTypeRoutes = require('./costTypeRoutes');
 const paymentTypeRoutes = require('./paymentTypeRoutes');
 const otherSourceRoutes = require('./otherSourceRoutes');
+const invoiceRoutes = require('./invoiceRoutes');
 
 
 
@@ -23,5 +24,6 @@ module.exports = {
     costTypeRoutes,
     paymentTypeRoutes,
     otherSourceRoutes,
+    invoiceRoutes,
 
 };
