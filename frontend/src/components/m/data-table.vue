@@ -104,7 +104,7 @@ const MTablePagination = defineAsyncComponent(() => import('./table-pagination.v
       <div v-else-if="hasData" class="overflow-x-auto" :class="showPagination ? 'h-[calc(100%-68px)]' : 'h-full'">
         <table class="relative w-full text-left text-gray-500 dark:text-gray-400" :class="sizeClasses">
           <!-- Table Header -->
-          <thead class="sticky top-0 z-100 bg-gray-50 text-xs text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+          <thead class="sticky top-0 z-10 bg-gray-50 text-xs text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th
                 v-for="column in columns"

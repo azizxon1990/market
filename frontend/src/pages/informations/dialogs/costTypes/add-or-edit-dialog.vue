@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { ICategory } from '~/types/information'
-import { defaultCategory } from '~/types/information'
+import type { ICostType } from '~/types/information'
+import { useCostTypesStore } from '~/stores/costTypes'
+import { defaultCostType } from '~/types/information'
 
-const categoriesStore = useCategoriesStore()
-const title = ref<string>('categories.add_category')
-const category = ref<ICategory>(defaultCategory)
+const costTypesStore = useCostTypesStore()
+const title = ref<string>('costTypes.add_cost_type')
+const costType = ref<ICostType>(defaultCostType)
 const showDialog = ref<boolean>(false)
 const loading = ref<boolean>(false)
 
@@ -12,14 +13,14 @@ const { t } = useI18n({
   useScope: 'global',
 })
 
-function open(currenCategory: ICategory | null = null) {
-  if (currenCategory) {
-    category.value = currenCategory
-    title.value = 'categories.edit_category'
+function open(currentCostType: ICostType | null = null) {
+  if (currentCostType) {
+    costType.value = currentCostType
+    title.value = 'costTypes.edit_cost_type'
   }
   else {
-    category.value = defaultCategory
-    title.value = 'categories.add_category'
+    costType.value = defaultCostType
+    title.value = 'costTypes.add_cost_type'
   }
   showDialog.value = true
 }
@@ -31,11 +32,11 @@ function handleCancel() {
 async function handleSave() {
   loading.value = true
   try {
-    if (category.value.id) {
-      await categoriesStore.updateCategory(category.value)
+    if (costType.value.id) {
+      await costTypesStore.updateCostType(costType.value)
     }
     else {
-      await categoriesStore.createCategory(category.value)
+      await costTypesStore.createCostType(costType.value)
     }
     showDialog.value = false
   }
@@ -57,10 +58,10 @@ defineExpose({
     :show-footer="true"
   >
     <MInput
-      v-model="category.name"
+      v-model="costType.name"
       class="w-100"
-      :label="t('categories.name')"
-      :placeholder="t('categories.enter_name')"
+      :label="t('costTypes.name')"
+      :placeholder="t('costTypes.enter_name')"
     />
     <template #footer>
       <div class="flex justify-end space-x-3">

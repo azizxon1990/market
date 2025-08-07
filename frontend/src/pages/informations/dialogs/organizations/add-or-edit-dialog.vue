@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { ICategory } from '~/types/information'
-import { defaultCategory } from '~/types/information'
+import type { IOrganization } from '~/types/information'
+import { useOrganizationsStore } from '~/stores/organizations'
+import { defaultOrganization } from '~/types/information'
 
-const categoriesStore = useCategoriesStore()
-const title = ref<string>('categories.add_category')
-const category = ref<ICategory>(defaultCategory)
+const organizationsStore = useOrganizationsStore()
+const title = ref<string>('organizations.add_organization')
+const organization = ref<IOrganization>(defaultOrganization)
 const showDialog = ref<boolean>(false)
 const loading = ref<boolean>(false)
 
@@ -12,14 +13,14 @@ const { t } = useI18n({
   useScope: 'global',
 })
 
-function open(currenCategory: ICategory | null = null) {
-  if (currenCategory) {
-    category.value = currenCategory
-    title.value = 'categories.edit_category'
+function open(currentOrganization: IOrganization | null = null) {
+  if (currentOrganization) {
+    organization.value = currentOrganization
+    title.value = 'organizations.edit_organization'
   }
   else {
-    category.value = defaultCategory
-    title.value = 'categories.add_category'
+    organization.value = defaultOrganization
+    title.value = 'organizations.add_organization'
   }
   showDialog.value = true
 }
@@ -31,11 +32,11 @@ function handleCancel() {
 async function handleSave() {
   loading.value = true
   try {
-    if (category.value.id) {
-      await categoriesStore.updateCategory(category.value)
+    if (organization.value.id) {
+      await organizationsStore.updateOrganization(organization.value)
     }
     else {
-      await categoriesStore.createCategory(category.value)
+      await organizationsStore.createOrganization(organization.value)
     }
     showDialog.value = false
   }
@@ -57,10 +58,10 @@ defineExpose({
     :show-footer="true"
   >
     <MInput
-      v-model="category.name"
+      v-model="organization.name"
       class="w-100"
-      :label="t('categories.name')"
-      :placeholder="t('categories.enter_name')"
+      :label="t('organizations.name')"
+      :placeholder="t('organizations.enter_name')"
     />
     <template #footer>
       <div class="flex justify-end space-x-3">

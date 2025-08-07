@@ -22,6 +22,11 @@ nav:
   categories: Категории
   products: Товары
   suppliers: Поставщики
+  organizations: Организации
+  warehouses: Склады
+  payment_types: Типы платежей
+  other_sources: Другие источники
+  cost_types: Типы расходов
   cart: Корзина
   profile: Профиль
   about: О нас
@@ -81,6 +86,93 @@ categories:
   name_placeholder: Введите название категории
   description_placeholder: Введите описание категории
 
+products:
+  title: Товары
+  description: Управление товарами
+  search_placeholder: Поиск товаров...
+  all_statuses: Все статусы
+  all_categories: Все категории
+  active: Активные
+  inactive: Неактивные
+  add_product: Добавить товар
+  import_from_excel: Импорт из Excel
+  name: Название
+  category: Категория
+  unit: Единица измерения
+  product_description: Описание
+  enter_name: Введите название товара
+  enter_unit: Введите единицу измерения
+  enter_description: Введите описание
+  select_category: Выберите категорию
+  no_products: Нет товаров
+  no_products_description: У вас пока нет товаров. Создайте первый товар.
+  add_first_product: Добавить первый товар
+  edit_product: Редактировать товар
+  name_placeholder: Введите название товара
+  unit_placeholder: "Например: шт, кг, л"
+  description_placeholder: Введите описание товара
+  category_required: Категория обязательна
+
+suppliers:
+  title: Поставщики
+  description: Управление поставщиками
+  search_placeholder: Поиск поставщиков...
+  add_supplier: Добавить поставщика
+  edit_supplier: Редактировать поставщика
+  name: Название
+  phone: Номер телефона
+  enter_name: Введите название поставщика
+  enter_phone: Введите номер телефона
+
+organizations:
+  title: Организации
+  description: Управление организациями
+  search_placeholder: Поиск организаций...
+  add_organization: Добавить организацию
+  edit_organization: Редактировать организацию
+  name: Название
+  enter_name: Введите название организации
+
+warehouses:
+  title: Склады
+  description: Управление складами
+  search_placeholder: Поиск складов...
+  add_warehouse: Добавить склад
+  edit_warehouse: Редактировать склад
+  name: Название
+  organization: Организация
+  enter_name: Введите название склада
+  select_organization: Выберите организацию
+
+paymentTypes:
+  title: Типы платежей
+  description: Управление типами платежей
+  search_placeholder: Поиск типов платежей...
+  add_payment_type: Добавить тип платежа
+  edit_payment_type: Редактировать тип платежа
+  name: Название
+  currency: Валюта
+  enter_name: Введите название типа платежа
+  enter_currency: Введите валюту
+
+otherSources:
+  title: Другие источники
+  description: Управление другими источниками
+  search_placeholder: Поиск других источников...
+  add_other_source: Добавить другой источник
+  edit_other_source: Редактировать другой источник
+  name: Название
+  enter_name: Введите название другого источника
+
+costTypes:
+  title: Типы расходов
+  description: Управление типами расходов
+  search_placeholder: Поиск типов расходов...
+  add_cost_type: Добавить тип расхода
+  edit_cost_type: Редактировать тип расхода
+  name: Название
+  enter_name: Введите название типа расхода
+
 common:
   loading: Загрузка...
   error: Произошла ошибка
@@ -116,6 +208,12 @@ table:
     quantity: Количество
     category: Категория
     supplier: Поставщик
+    organization: Организация
+    warehouse: Склад
+    currency: Валюта
+    payment_type: Тип платежа
+    other_source: Другой источник
+    cost_type: Тип расхода
     code: Код
     email: Email
     phone: Телефон

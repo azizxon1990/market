@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { ICategory } from '~/types/information'
-import { defaultCategory } from '~/types/information'
+import type { IOtherSource } from '~/types/information'
+import { useOtherSourcesStore } from '~/stores/otherSources'
+import { defaultOtherSource } from '~/types/information'
 
-const categoriesStore = useCategoriesStore()
-const title = ref<string>('categories.add_category')
-const category = ref<ICategory>(defaultCategory)
+const otherSourcesStore = useOtherSourcesStore()
+const title = ref<string>('otherSources.add_other_source')
+const otherSource = ref<IOtherSource>(defaultOtherSource)
 const showDialog = ref<boolean>(false)
 const loading = ref<boolean>(false)
 
@@ -12,14 +13,14 @@ const { t } = useI18n({
   useScope: 'global',
 })
 
-function open(currenCategory: ICategory | null = null) {
-  if (currenCategory) {
-    category.value = currenCategory
-    title.value = 'categories.edit_category'
+function open(currentOtherSource: IOtherSource | null = null) {
+  if (currentOtherSource) {
+    otherSource.value = currentOtherSource
+    title.value = 'otherSources.edit_other_source'
   }
   else {
-    category.value = defaultCategory
-    title.value = 'categories.add_category'
+    otherSource.value = defaultOtherSource
+    title.value = 'otherSources.add_other_source'
   }
   showDialog.value = true
 }
@@ -31,11 +32,11 @@ function handleCancel() {
 async function handleSave() {
   loading.value = true
   try {
-    if (category.value.id) {
-      await categoriesStore.updateCategory(category.value)
+    if (otherSource.value.id) {
+      await otherSourcesStore.updateOtherSource(otherSource.value)
     }
     else {
-      await categoriesStore.createCategory(category.value)
+      await otherSourcesStore.createOtherSource(otherSource.value)
     }
     showDialog.value = false
   }
@@ -57,10 +58,10 @@ defineExpose({
     :show-footer="true"
   >
     <MInput
-      v-model="category.name"
+      v-model="otherSource.name"
       class="w-100"
-      :label="t('categories.name')"
-      :placeholder="t('categories.enter_name')"
+      :label="t('otherSources.name')"
+      :placeholder="t('otherSources.enter_name')"
     />
     <template #footer>
       <div class="flex justify-end space-x-3">

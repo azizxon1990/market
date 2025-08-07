@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { ICategory } from '~/types/information'
-import { defaultCategory } from '~/types/information'
+import type { ISupplier } from '~/types/information'
+import { useSuppliersStore } from '~/stores/suppliers'
+import { defaultSupplier } from '~/types/information'
 
-const categoriesStore = useCategoriesStore()
-const title = ref<string>('categories.add_category')
-const category = ref<ICategory>(defaultCategory)
+const suppliersStore = useSuppliersStore()
+const title = ref<string>('suppliers.add_supplier')
+const supplier = ref<ISupplier>(defaultSupplier)
 const showDialog = ref<boolean>(false)
 const loading = ref<boolean>(false)
 
@@ -12,14 +13,14 @@ const { t } = useI18n({
   useScope: 'global',
 })
 
-function open(currenCategory: ICategory | null = null) {
-  if (currenCategory) {
-    category.value = currenCategory
-    title.value = 'categories.edit_category'
+function open(currentSupplier: ISupplier | null = null) {
+  if (currentSupplier) {
+    supplier.value = currentSupplier
+    title.value = 'suppliers.edit_supplier'
   }
   else {
-    category.value = defaultCategory
-    title.value = 'categories.add_category'
+    supplier.value = defaultSupplier
+    title.value = 'suppliers.add_supplier'
   }
   showDialog.value = true
 }
@@ -31,11 +32,11 @@ function handleCancel() {
 async function handleSave() {
   loading.value = true
   try {
-    if (category.value.id) {
-      await categoriesStore.updateCategory(category.value)
+    if (supplier.value.id) {
+      await suppliersStore.updateSupplier(supplier.value)
     }
     else {
-      await categoriesStore.createCategory(category.value)
+      await suppliersStore.createSupplier(supplier.value)
     }
     showDialog.value = false
   }
@@ -56,12 +57,20 @@ defineExpose({
     size="medium"
     :show-footer="true"
   >
-    <MInput
-      v-model="category.name"
-      class="w-100"
-      :label="t('categories.name')"
-      :placeholder="t('categories.enter_name')"
-    />
+    <div class="space-y-4">
+      <MInput
+        v-model="supplier.name"
+        class="w-100"
+        :label="t('suppliers.name')"
+        :placeholder="t('suppliers.enter_name')"
+      />
+      <MInput
+        v-model="supplier.phone_number"
+        class="w-100"
+        :label="t('suppliers.phone')"
+        :placeholder="t('suppliers.enter_phone')"
+      />
+    </div>
     <template #footer>
       <div class="flex justify-end space-x-3">
         <MButton

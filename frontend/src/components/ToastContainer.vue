@@ -13,7 +13,7 @@ function handleToastClose(id: string) {
   <Teleport to="body">
     <div
       v-if="toasts.length > 0"
-      class="pointer-events-none fixed inset-0 z-50 flex items-end px-4 py-6 sm:items-start sm:p-6"
+      class="pointer-events-none fixed inset-0 z-5000000 flex items-end px-4 py-6 sm:items-start sm:p-6"
     >
       <div class="w-full flex flex-col items-center sm:items-end space-y-4">
         <TransitionGroup

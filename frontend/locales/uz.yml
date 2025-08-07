@@ -22,6 +22,11 @@ nav:
   categories: Kategoriyalar
   products: Mahsulotlar
   suppliers: Yetkazib beruvchilar
+  organizations: Tashkilotlar
+  warehouses: Omborlar
+  payment_types: To'lov turlari
+  other_sources: Boshqa manbalar
+  cost_types: Xarajat turlari
   cart: Savat
   profile: Profil
   about: Haqida
@@ -57,29 +62,102 @@ categories:
   description: Mahsulot kategoriyalarini boshqarish
   search_placeholder: Kategoriyalarni qidirish...
   all_statuses: Barcha statuslar
-  active: Faol
-  inactive: Nofaol
   add_category: Kategoriya qo'shish
   name: Nomi
-  status: Status
-  created_at: Yaratilgan sana
-  actions: Amallar
   enter_name: Kategoriya nomini kiriting
   no_categories: Kategoriyalar yo'q
   no_categories_description: Sizda hali kategoriyalar yo'q. Birinchi kategoriyani yarating.
   add_first_category: Birinchi kategoriyani qo'shish
-  showing: Ko'rsatilmoqda
-  to: dan
-  of: dan
-  results: natija
-  previous: Oldingi
-  next: Keyingi
   edit_category: Kategoriyani tahrirlash
-  cancel: Bekor qilish
-  create: Yaratish
-  update: Yangilash
   name_placeholder: Kategoriya nomini kiriting
   description_placeholder: Kategoriya tavsifini kiriting
+
+products:
+  title: Mahsulotlar
+  description: Mahsulotlarni boshqarish
+  search_placeholder: Mahsulotlarni qidirish...
+  all_statuses: Barcha statuslar
+  all_categories: Barcha kategoriyalar
+  active: Faol
+  inactive: Nofaol
+  add_product: Mahsulot qo'shish
+  import_from_excel: Excel'dan import
+  name: Nomi
+  category: Kategoriya
+  unit: O'lchov birligi
+  product_description: Tavsif
+  enter_name: Mahsulot nomini kiriting
+  enter_unit: O'lchov birligini kiriting
+  enter_description: Tavsif kiriting
+  select_category: Kategoriyani tanlang
+  no_products: Mahsulotlar yo'q
+  no_products_description: Sizda hali mahsulotlar yo'q. Birinchi mahsulotni yarating.
+  add_first_product: Birinchi mahsulotni qo'shish
+  edit_product: Mahsulotni tahrirlash
+  name_placeholder: Mahsulot nomini kiriting
+  unit_placeholder: "Masalan: dona, kg, litr"
+  description_placeholder: Mahsulot tavsifini kiriting
+  category_required: Kategoriya majburiy
+
+suppliers:
+  title: Yetkazib beruvchilar
+  description: Yetkazib beruvchilarni boshqarish
+  search_placeholder: Yetkazib beruvchilarni qidirish...
+  add_supplier: Yetkazib beruvchi qo'shish
+  edit_supplier: Yetkazib beruvchini tahrirlash
+  name: Nomi
+  phone: Telefon raqami
+  enter_name: Yetkazib beruvchi nomini kiriting
+  enter_phone: Telefon raqamini kiriting
+
+organizations:
+  title: Tashkilotlar
+  description: Tashkilotlarni boshqarish
+  search_placeholder: Tashkilotlarni qidirish...
+  add_organization: Tashkilot qo'shish
+  edit_organization: Tashkilotni tahrirlash
+  name: Nomi
+  enter_name: Tashkilot nomini kiriting
+
+warehouses:
+  title: Omborlar
+  description: Omborlarni boshqarish
+  search_placeholder: Omborlarni qidirish...
+  add_warehouse: Ombor qo'shish
+  edit_warehouse: Omborni tahrirlash
+  name: Nomi
+  organization: Tashkilot
+  enter_name: Ombor nomini kiriting
+  select_organization: Tashkilotni tanlang
+
+paymentTypes:
+  title: To'lov turlari
+  description: To'lov turlarini boshqarish
+  search_placeholder: To'lov turlarini qidirish...
+  add_payment_type: To'lov turi qo'shish
+  edit_payment_type: To'lov turini tahrirlash
+  name: Nomi
+  currency: Valyuta
+  enter_name: To'lov turi nomini kiriting
+  enter_currency: Valyutani kiriting
+
+otherSources:
+  title: Boshqa manbalar
+  description: Boshqa manbalarni boshqarish
+  search_placeholder: Boshqa manbalarni qidirish...
+  add_other_source: Boshqa manba qo'shish
+  edit_other_source: Boshqa manbani tahrirlash
+  name: Nomi
+  enter_name: Boshqa manba nomini kiriting
+
+costTypes:
+  title: Xarajat turlari
+  description: Xarajat turlarini boshqarish
+  search_placeholder: Xarajat turlarini qidirish...
+  add_cost_type: Xarajat turi qo'shish
+  edit_cost_type: Xarajat turini tahrirlash
+  name: Nomi
+  enter_name: Xarajat turi nomini kiriting
 
 common:
   loading: Yuklanmoqda...
@@ -115,7 +193,14 @@ table:
     price: Narx
     quantity: Miqdor
     category: Kategoriya
+    unit: O'lchov birligi
     supplier: Yetkazib beruvchi
+    organization: Tashkilot
+    warehouse: Ombor
+    currency: Valyuta
+    payment_type: To'lov turi
+    other_source: Boshqa manba
+    cost_type: Xarajat turi
     code: Kod
     email: Email
     phone: Telefon

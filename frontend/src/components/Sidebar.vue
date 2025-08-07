@@ -32,6 +32,31 @@ const navigations = [
         to: '/informations/suppliers',
         icon: 'ri-truck-line',
       },
+      {
+        name: 'nav.organizations',
+        to: '/informations/organizations',
+        icon: 'ri-building-line',
+      },
+      {
+        name: 'nav.warehouses',
+        to: '/informations/warehouses',
+        icon: 'ri-store-line',
+      },
+      {
+        name: 'nav.payment_types',
+        to: '/informations/paymentTypes',
+        icon: 'ri-bank-card-line',
+      },
+      {
+        name: 'nav.other_sources',
+        to: '/informations/otherSources',
+        icon: 'ri-external-link-line',
+      },
+      {
+        name: 'nav.cost_types',
+        to: '/informations/costTypes',
+        icon: 'ri-price-tag-line',
+      },
     ],
   },
 ]

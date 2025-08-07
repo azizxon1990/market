@@ -14,7 +14,8 @@ public/assets/fonts
 frontend/node_modules
 frontend/dist
 frontend/.env
-frontend/,pnpm-store
+frontend/.pnpm-store
 backend/node_modules
 backend/dist
 backend/.env
+backend/.pnpm-store

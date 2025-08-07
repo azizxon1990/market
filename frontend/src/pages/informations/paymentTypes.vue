@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { ISupplier } from '~/types/information'
+import type { IPaymentType } from '~/types/information'
 import { computed, onMounted, ref } from 'vue'
-import { useSuppliersStore } from '~/stores/suppliers'
+import { usePaymentTypesStore } from '~/stores/paymentTypes'
 import { DEFAULT_ITEMS_PER_PAGE } from '~/utils/constants'
-import AddOrEditDialog from './dialogs/suppliers/add-or-edit-dialog.vue'
+import AddOrEditDialog from './dialogs/paymentTypes/add-or-edit-dialog.vue'
 
 defineOptions({
-  name: 'SuppliersPage',
+  name: 'PaymentTypesPage',
 })
 
-const suppliersStore = useSuppliersStore()
+const paymentTypesStore = usePaymentTypesStore()
 const dialogRef = ref<InstanceType<typeof AddOrEditDialog> | null>(null)
 // Reactive data
 const searchQuery = ref('')
@@ -28,17 +28,17 @@ const paginationData = ref({
 const columns = ref([
   { key: 'id', label: 'table.columns.id', width: '80px', translatable: true },
   { key: 'name', label: 'table.columns.name', translatable: true },
-  { key: 'phone_number', label: 'table.columns.phone', translatable: true },
+  { key: 'currency', label: 'table.columns.currency', width: '100px', translatable: true },
   { key: 'active', label: 'table.columns.status', width: '100px', translatable: true },
   { key: 'actions', label: 'table.columns.actions', width: '100px', translatable: true },
 ])
 
-const suppliers = computed(() => suppliersStore.suppliers)
+const paymentTypes = computed(() => paymentTypesStore.paymentTypes)
 
 // Methods
-async function fetchSuppliers() {
+async function fetchPaymentTypes() {
   try {
-    const result = await suppliersStore.fetchSuppliers({
+    const result = await paymentTypesStore.fetchPaymentTypes({
       page: currentPage.value,
       limit: itemsPerPage.value,
       search: searchQuery.value || undefined,
@@ -56,18 +56,18 @@ async function fetchSuppliers() {
     }
   }
   catch (error) {
-    console.error('Error fetching suppliers:', error)
+    console.error('Error fetching payment types:', error)
   }
 }
 
 function onPageChange(page: number) {
   currentPage.value = page
-  fetchSuppliers()
+  fetchPaymentTypes()
 }
 
 function onSearch() {
   currentPage.value = 1
-  fetchSuppliers()
+  fetchPaymentTypes()
 }
 
 // Dialog methods
@@ -75,13 +75,13 @@ function openAddDialog() {
   dialogRef.value?.open()
 }
 
-function openEditDialog(supplier: ISupplier) {
-  dialogRef.value?.open(supplier)
+function openEditDialog(paymentType: IPaymentType) {
+  dialogRef.value?.open(paymentType)
 }
 
 // Lifecycle
 onMounted(() => {
-  fetchSuppliers()
+  fetchPaymentTypes()
 })
 </script>
 
@@ -90,7 +90,7 @@ onMounted(() => {
     <!-- Header -->
     <div class="flex items-center justify-between">
       <h1 class="text-2xl text-gray-900 font-bold dark:text-white">
-        {{ $t('suppliers.title') }}
+        {{ $t('paymentTypes.title') }}
       </h1>
     </div>
 
@@ -99,7 +99,7 @@ onMounted(() => {
       <MInput
         v-model="searchQuery"
         prepend-icon="ri-search-line"
-        :placeholder="$t('suppliers.search_placeholder')"
+        :placeholder="$t('paymentTypes.search_placeholder')"
         type="text"
         class="w-full"
         @keyup.enter="onSearch"
@@ -110,18 +110,18 @@ onMounted(() => {
         color="primary"
         @click="openAddDialog"
       >
-        {{ $t('suppliers.add_supplier') }}
+        {{ $t('paymentTypes.add_payment_type') }}
       </MButton>
     </div>
     <!-- Data Table -->
     <MDataTable
       :columns="columns"
-      :data="suppliers"
+      :data="paymentTypes"
       :pagination="paginationData"
       @page-change="onPageChange"
     >
-      <template #phone_number="{ row }">
-        <span>{{ row.phone_number || '-' }}</span>
+      <template #currency="{ row }">
+        <span>{{ row.currency || '-' }}</span>
       </template>
       <template #active="{ row }">
         <span>{{ row.active ? $t('table.columns.active') : $t('table.columns.inactive') }}</span>
@@ -132,7 +132,7 @@ onMounted(() => {
             icon-button
             icon="ri-edit-line"
             color="secondary"
-            @click="openEditDialog(row as ISupplier)"
+            @click="openEditDialog(row as IPaymentType)"
           />
           <MSwitch
             v-model="row.active"

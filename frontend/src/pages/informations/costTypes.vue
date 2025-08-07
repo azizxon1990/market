@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { ISupplier } from '~/types/information'
+import type { ICostType } from '~/types/information'
 import { computed, onMounted, ref } from 'vue'
-import { useSuppliersStore } from '~/stores/suppliers'
+import { useCostTypesStore } from '~/stores/costTypes'
 import { DEFAULT_ITEMS_PER_PAGE } from '~/utils/constants'
-import AddOrEditDialog from './dialogs/suppliers/add-or-edit-dialog.vue'
+import AddOrEditDialog from './dialogs/costTypes/add-or-edit-dialog.vue'
 
 defineOptions({
-  name: 'SuppliersPage',
+  name: 'CostTypesPage',
 })
 
-const suppliersStore = useSuppliersStore()
+const costTypesStore = useCostTypesStore()
 const dialogRef = ref<InstanceType<typeof AddOrEditDialog> | null>(null)
 // Reactive data
 const searchQuery = ref('')
@@ -28,17 +28,16 @@ const paginationData = ref({
 const columns = ref([
   { key: 'id', label: 'table.columns.id', width: '80px', translatable: true },
   { key: 'name', label: 'table.columns.name', translatable: true },
-  { key: 'phone_number', label: 'table.columns.phone', translatable: true },
   { key: 'active', label: 'table.columns.status', width: '100px', translatable: true },
   { key: 'actions', label: 'table.columns.actions', width: '100px', translatable: true },
 ])
 
-const suppliers = computed(() => suppliersStore.suppliers)
+const costTypes = computed(() => costTypesStore.costTypes)
 
 // Methods
-async function fetchSuppliers() {
+async function fetchCostTypes() {
   try {
-    const result = await suppliersStore.fetchSuppliers({
+    const result = await costTypesStore.fetchCostTypes({
       page: currentPage.value,
       limit: itemsPerPage.value,
       search: searchQuery.value || undefined,
@@ -56,18 +55,18 @@ async function fetchSuppliers() {
     }
   }
   catch (error) {
-    console.error('Error fetching suppliers:', error)
+    console.error('Error fetching cost types:', error)
   }
 }
 
 function onPageChange(page: number) {
   currentPage.value = page
-  fetchSuppliers()
+  fetchCostTypes()
 }
 
 function onSearch() {
   currentPage.value = 1
-  fetchSuppliers()
+  fetchCostTypes()
 }
 
 // Dialog methods
@@ -75,13 +74,13 @@ function openAddDialog() {
   dialogRef.value?.open()
 }
 
-function openEditDialog(supplier: ISupplier) {
-  dialogRef.value?.open(supplier)
+function openEditDialog(costType: ICostType) {
+  dialogRef.value?.open(costType)
 }
 
 // Lifecycle
 onMounted(() => {
-  fetchSuppliers()
+  fetchCostTypes()
 })
 </script>
 
@@ -90,7 +89,7 @@ onMounted(() => {
     <!-- Header -->
     <div class="flex items-center justify-between">
       <h1 class="text-2xl text-gray-900 font-bold dark:text-white">
-        {{ $t('suppliers.title') }}
+        {{ $t('costTypes.title') }}
       </h1>
     </div>
 
@@ -99,7 +98,7 @@ onMounted(() => {
       <MInput
         v-model="searchQuery"
         prepend-icon="ri-search-line"
-        :placeholder="$t('suppliers.search_placeholder')"
+        :placeholder="$t('costTypes.search_placeholder')"
         type="text"
         class="w-full"
         @keyup.enter="onSearch"
@@ -110,19 +109,16 @@ onMounted(() => {
         color="primary"
         @click="openAddDialog"
       >
-        {{ $t('suppliers.add_supplier') }}
+        {{ $t('costTypes.add_cost_type') }}
       </MButton>
     </div>
     <!-- Data Table -->
     <MDataTable
       :columns="columns"
-      :data="suppliers"
+      :data="costTypes"
       :pagination="paginationData"
       @page-change="onPageChange"
     >
-      <template #phone_number="{ row }">
-        <span>{{ row.phone_number || '-' }}</span>
-      </template>
       <template #active="{ row }">
         <span>{{ row.active ? $t('table.columns.active') : $t('table.columns.inactive') }}</span>
       </template>
@@ -132,7 +128,7 @@ onMounted(() => {
             icon-button
             icon="ri-edit-line"
             color="secondary"
-            @click="openEditDialog(row as ISupplier)"
+            @click="openEditDialog(row as ICostType)"
           />
           <MSwitch
             v-model="row.active"

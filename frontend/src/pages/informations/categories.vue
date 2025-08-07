@@ -2,6 +2,7 @@
 import type { ICategory } from '~/types/information'
 import { computed, onMounted, ref } from 'vue'
 import { useCategoriesStore } from '~/stores/categories'
+import { DEFAULT_ITEMS_PER_PAGE } from '~/utils/constants'
 import AddOrEditDialog from './dialogs/categories/add-or-edit-dialog.vue'
 
 defineOptions({
@@ -13,12 +14,12 @@ const dialogRef = ref<InstanceType<typeof AddOrEditDialog> | null>(null)
 // Reactive data
 const searchQuery = ref('')
 const currentPage = ref(1)
-const itemsPerPage = ref(50)
+const itemsPerPage = ref(DEFAULT_ITEMS_PER_PAGE)
 const paginationData = ref({
   currentPage: 1,
   totalPages: 1,
   totalItems: 0,
-  itemsPerPage: 10,
+  itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
   startItem: 0,
   endItem: 0,
 })
