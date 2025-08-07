@@ -8,11 +8,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AddOrEditDialog: typeof import('./components/add-or-edit-dialog.vue')['default']
     LanguageSwitcher: typeof import('./components/LanguageSwitcher.vue')['default']
     MainPage: typeof import('./components/MainPage.vue')['default']
     MAutocomplete: typeof import('./components/m/autocomplete.vue')['default']
-    MAutocompleteExample: typeof import('./components/m/autocomplete-example.vue')['default']
     MButton: typeof import('./components/m/button.vue')['default']
     MDataTable: typeof import('./components/m/data-table.vue')['default']
     MDialog: typeof import('./components/m/dialog.vue')['default']
