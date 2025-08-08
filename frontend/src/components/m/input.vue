@@ -77,11 +77,15 @@ const classes = computed(() => ({
     sizeClasses.value.wrapper,
   ],
   input: [
-    'flex-1 border-none bg-transparent outline-none',
+    'w-full border-none bg-transparent outline-none',
     'text-gray-900 placeholder-gray-400',
     'dark:text-gray-100 dark:placeholder-gray-500',
     props.disabled && 'cursor-not-allowed',
     sizeClasses.value.input,
+    // Hide number input spinners in all browsers
+    '[appearance:textfield]', // Firefox
+    '[&::-webkit-outer-spin-button]:appearance-none', // Webkit browsers
+    '[&::-webkit-inner-spin-button]:appearance-none', // Webkit browsers
   ],
   icon: [
     'flex cursor-pointer items-center justify-center',

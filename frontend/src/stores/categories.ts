@@ -4,6 +4,7 @@ import { http } from '~/utils/axios'
 
 interface ICategoriesState {
   categories: ICategory[]
+  activeCategories?: ICategory[]
   loading: boolean
   saving: boolean
 }
@@ -11,6 +12,7 @@ interface ICategoriesState {
 export const useCategoriesStore = defineStore('categories', {
   state: (): ICategoriesState => ({
     categories: [],
+    activeCategories: [],
     loading: false,
     saving: false,
   }),
@@ -78,6 +80,17 @@ export const useCategoriesStore = defineStore('categories', {
         this.saving = false
       }
     },
+    async fetchActiveCategories() {
+      try {
+        const response = await http.get('/categories/active')
+        this.activeCategories = response.data
+        return this.activeCategories
+      }
+      catch (error) {
+        console.error('Error fetching active categories:', error)
+        throw error
+      }
+    }
   },
 })
 

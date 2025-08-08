@@ -20,19 +20,10 @@ const { t } = useI18n({
   useScope: 'global',
 })
 
-// Computed category options for autocomplete
-const categoryOptions = computed(() => {
-  return categories.value.map(category => ({
-    id: category.id,
-    label: category.name,
-    value: category.id,
-  }))
-})
-
 async function loadCategories() {
   try {
-    const result = await categoriesStore.fetchCategories({ status: 'active', limit: 1000 })
-    categories.value = result?.categories || []
+    const result = await categoriesStore.fetchActiveCategories()
+    categories.value = result || []
   }
   catch (error) {
     console.error('Error loading categories:', error)
@@ -120,7 +111,9 @@ defineExpose({
         </label>
         <MAutocomplete
           v-model="product.category_id"
-          :options="categoryOptions"
+          :items="categories"
+          item-value="id"
+          item-text="name"
           :placeholder="t('products.select_category')"
           size="md"
           :clearable="false"

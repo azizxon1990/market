@@ -4,6 +4,7 @@ button:
   cancel: Отмена
   close: Закрыть
   save: Сохранить
+  select: Выбрать
   go: Перейти
   home: Главная
   toggle_dark: Включить темный режим
@@ -18,6 +19,8 @@ button:
   view: Просмотр
   edit: Редактировать
   delete: Удалить
+  add: Добавить
+  remove: Удалить
   clear_filters: Очистить фильтры
 
 nav:
@@ -99,6 +102,7 @@ products:
   title: Товары
   description: Управление товарами
   search_placeholder: Поиск товаров...
+  search_products: Поиск товаров...
   all_statuses: Все статусы
   all_categories: Все категории
   active: Активные
@@ -108,15 +112,24 @@ products:
   name: Название
   category: Категория
   unit: Единица измерения
+  quantity: Количество
+  price: Цена
+  total: Итого
   product_description: Описание
   enter_name: Введите название товара
   enter_unit: Введите единицу измерения
   enter_description: Введите описание
   select_category: Выберите категорию
   no_products: Нет товаров
+  no_products_found: Товары не найдены
   no_products_description: У вас пока нет товаров. Создайте первый товар.
+  no_products_selected: Ни одного товара не выбрано
+  add_products_to_see_here: Добавьте товары, чтобы увидеть их здесь
   add_first_product: Добавить первый товар
   edit_product: Редактировать товар
+  pick_products: Выбор товаров
+  selected_products: Выбранные товары
+  selected_count: "{count} выбрано"
   name_placeholder: Введите название товара
   unit_placeholder: "Например: шт, кг, л"
   description_placeholder: Введите описание товара
@@ -217,6 +230,7 @@ table:
     price: Цена
     quantity: Количество
     category: Категория
+    unit: Единица измерения
     supplier: Поставщик
     organization: Организация
     warehouse: Склад
@@ -241,6 +255,9 @@ invoices:
   start_date: Дата с
   end_date: Дата по
   create_invoice: Создать накладную
+  create_new_invoice: Создать новую накладную
+  create_supplier_invoice: Создать накладную поставщика
+  add_products: Добавить товары
   confirm_delete: Вы уверены, что хотите удалить эту накладную?
 
 not-found: Не найден

@@ -37,6 +37,11 @@ declare module 'vue-router/auto-routes' {
     '/informations/suppliers': RouteRecordInfo<'/informations/suppliers', '/informations/suppliers', Record<never, never>, Record<never, never>>,
     '/informations/warehouses': RouteRecordInfo<'/informations/warehouses', '/informations/warehouses', Record<never, never>, Record<never, never>>,
     '/login': RouteRecordInfo<'/login', '/login', Record<never, never>, Record<never, never>>,
+    '/operations/input_products_supplier': RouteRecordInfo<'/operations/input_products_supplier', '/operations/input_products_supplier', Record<never, never>, Record<never, never>>,
+    '/operations/supplier-invoices/create': RouteRecordInfo<'/operations/supplier-invoices/create', '/operations/supplier-invoices/create', Record<never, never>, Record<never, never>>,
+    '/operations/supplier-invoices/dialogs/pick-products': RouteRecordInfo<'/operations/supplier-invoices/dialogs/pick-products', '/operations/supplier-invoices/dialogs/pick-products', Record<never, never>, Record<never, never>>,
+    '/operations/supplier-invoices/dialogs/selection-products': RouteRecordInfo<'/operations/supplier-invoices/dialogs/selection-products', '/operations/supplier-invoices/dialogs/selection-products', Record<never, never>, Record<never, never>>,
+    '/operations/supplier-invoices/dialogs/selection-products-container': RouteRecordInfo<'/operations/supplier-invoices/dialogs/selection-products-container', '/operations/supplier-invoices/dialogs/selection-products-container', Record<never, never>, Record<never, never>>,
     '/operations/supplier-invoices/input': RouteRecordInfo<'/operations/supplier-invoices/input', '/operations/supplier-invoices/input', Record<never, never>, Record<never, never>>,
   }
 }

@@ -131,6 +131,8 @@ const updateCategory = async (req, res) => {
 
 const getActiveCategories = async (req, res) => {
   try {
+    console.log("Fetching active categories");
+    
     const activeCategories = await Category.findAll({ where: { active: true } });
     res.json(activeCategories);
   } catch (error) {

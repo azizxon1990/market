@@ -61,7 +61,7 @@ const dialogClasses = computed(() => {
     small: 'max-w-sm',
     medium: 'max-w-md',
     large: 'max-w-2xl',
-    fullscreen: 'w-full h-full max-w-none rounded-none',
+    fullscreen: 'rounded-none !fixed inset-0',
   }
 
   const baseClasses = [
@@ -76,16 +76,21 @@ const dialogClasses = computed(() => {
 })
 
 const overlayClasses = computed(() => [
-  'fixed inset-0 z-50 flex items-center justify-center',
+  'fixed inset-0 z-5000000 flex items-center justify-center',
   'bg-black bg-opacity-50 backdrop-blur-sm',
   'transition-opacity duration-300',
 ].join(' '))
 
 const contentClasses = computed(() => {
-  const classes = ['p-6 text-gray-900 dark:text-gray-100']
+  const classes = ['text-gray-900 dark:text-gray-100']
 
   if (props.scrollable) {
     classes.push('overflow-y-auto max-h-96')
+  }
+  if(props.size ==='fullscreen'){
+    classes.push('px-4')
+  } else {
+    classes.push('p-6')
   }
 
   return classes.join(' ')
@@ -135,49 +140,25 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <Transition
-      name="dialog"
-      @after-enter="emit('afterEnter')"
-      @after-leave="emit('afterLeave')"
-    >
-      <div
-        v-if="modelValue"
-        :class="overlayClasses"
-        @click="handleOverlayClick"
-      >
-        <div
-          ref="dialogRef"
-          :class="dialogClasses"
-          :style="props.size !== 'fullscreen' ? { maxWidth: props.maxWidth } : undefined"
-          tabindex="-1"
-          role="dialog"
-          aria-modal="true"
-          :aria-labelledby="title ? 'dialog-title' : undefined"
-        >
+    <Transition name="dialog" @after-enter="emit('afterEnter')" @after-leave="emit('afterLeave')">
+      <div v-if="modelValue" :class="overlayClasses" @click="handleOverlayClick">
+        <div ref="dialogRef" :class="dialogClasses"
+          :style="props.size !== 'fullscreen' ? { maxWidth: props.maxWidth } : undefined" tabindex="-1" role="dialog"
+          aria-modal="true" :aria-labelledby="title ? 'dialog-title' : undefined">
           <!-- Header -->
-          <div
-            v-if="showHeader"
-            class="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700"
-          >
-            <h2
-              v-if="title"
-              id="dialog-title"
-              class="text-lg text-gray-900 font-semibold dark:text-gray-100"
-            >
-              {{ title }}
-            </h2>
-            <slot v-else name="header" />
+          <slot name="header">
 
-            <MButton
-              v-if="closable"
-              icon-button
-              icon="ri-close-line"
-              color="ghost"
-              size="small"
-              aria-label="Close dialog"
-              @click="closeDialog"
-            />
-          </div>
+            <div v-if="showHeader"
+              class="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
+              <h2 v-if="title" id="dialog-title" class="text-lg text-gray-900 font-semibold dark:text-gray-100">
+                {{ title }}
+              </h2>
+              <slot v-else name="header" />
+
+              <MButton v-if="closable" icon-button icon="ri-close-line" color="ghost" size="small"
+                aria-label="Close dialog" @click="closeDialog" />
+            </div>
+          </slot>
 
           <!-- Content -->
           <div :class="contentClasses">
@@ -185,10 +166,7 @@ onUnmounted(() => {
           </div>
 
           <!-- Footer -->
-          <div
-            v-if="showFooter"
-            class="border-t border-gray-200 px-6 py-4 dark:border-gray-700"
-          >
+          <div v-if="showFooter" class="border-t border-gray-200 px-6 py-4 dark:border-gray-700">
             <slot name="footer" />
           </div>
         </div>

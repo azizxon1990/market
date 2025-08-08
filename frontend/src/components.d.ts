@@ -13,6 +13,8 @@ declare module 'vue' {
     MAutocomplete: typeof import('./components/m/autocomplete.vue')['default']
     MButton: typeof import('./components/m/button.vue')['default']
     MDataTable: typeof import('./components/m/data-table.vue')['default']
+    MDatePicker: typeof import('./components/m/date-picker.vue')['default']
+    MDatePickerSimple: typeof import('./components/m/date-picker-simple.vue')['default']
     MDialog: typeof import('./components/m/dialog.vue')['default']
     MInput: typeof import('./components/m/input.vue')['default']
     MREADMEAutocomplete: typeof import('./components/m/README-autocomplete.md')['default']

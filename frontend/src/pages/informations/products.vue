@@ -47,21 +47,6 @@ const columns = ref([
 
 const products = computed(() => productsStore.products)
 
-// Computed category options for autocomplete
-const categoryOptions = computed(() => {
-  const allOption = {
-    id: 'all',
-    label: t('products.all_categories'),
-    value: null,
-  }
-  const categoryOpts = categories.value.map(category => ({
-    id: category.id,
-    label: category.name,
-    value: category.id,
-  }))
-  return [allOption, ...categoryOpts]
-})
-
 // Computed status options for autocomplete
 const statusOptions = computed(() => [
   {
@@ -110,8 +95,8 @@ async function fetchProducts() {
 
 async function fetchCategories() {
   try {
-    const result = await categoriesStore.fetchCategories({ status: 'active', limit: 1000 })
-    categories.value = result?.categories || []
+    const result = await categoriesStore.fetchActiveCategories()
+    categories.value = result || []
   }
   catch (error) {
     console.error('Error fetching categories:', error)
@@ -236,7 +221,9 @@ onMounted(() => {
         <div class="min-w-48">
           <MAutocomplete
             v-model="selectedCategoryId"
-            :options="categoryOptions"
+            :items="categoriesStore.activeCategories"
+            item-value="id"
+            item-text="name"
             :placeholder="$t('products.all_categories')"
             size="md"
             :clearable="false"
@@ -249,7 +236,9 @@ onMounted(() => {
         <div class="min-w-40">
           <MAutocomplete
             v-model="selectedStatus"
-            :options="statusOptions"
+            :items="statusOptions"
+            item-value="value"
+            item-text="label"
             :placeholder="$t('products.all_statuses')"
             size="md"
             :clearable="false"

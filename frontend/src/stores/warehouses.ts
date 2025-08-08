@@ -4,6 +4,7 @@ import { http } from '~/utils/axios'
 
 interface IWarehousesState {
   warehouses: IWarehouse[]
+  activeWarehouses?: IWarehouse[]
   loading: boolean
   saving: boolean
 }
@@ -11,6 +12,7 @@ interface IWarehousesState {
 export const useWarehousesStore = defineStore('warehouses', {
   state: (): IWarehousesState => ({
     warehouses: [],
+    activeWarehouses: [],
     loading: false,
     saving: false,
   }),
@@ -78,10 +80,14 @@ export const useWarehousesStore = defineStore('warehouses', {
         this.saving = false
       }
     },
-    async fetchActiveWarehousesByOrganization(organizationId: number) {
+    async fetchActiveWarehousesByOrganization(organizationId: number | null = null) {
+      if (!organizationId) {
+        organizationId = useAuthStore().userInfo?.organization_id || null
+      }
       try {
-        const response = await http.get(`/warehouses/active/${organizationId}`)
-        return response.data
+        const response = await http.get(`/warehouses/organization/${organizationId}`)
+        this.activeWarehouses = response.data.data || response.data
+        return this.activeWarehouses
       }
       catch (error) {
         console.error('Error fetching active warehouses:', error)

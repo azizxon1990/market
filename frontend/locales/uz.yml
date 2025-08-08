@@ -4,6 +4,7 @@ button:
   cancel: Bekor qilish
   close: Yopish
   save: Saqlash
+  select: Tanlash
   go: Kettik
   home: Bosh sahifa
   toggle_dark: Qorong'i rejimga o'tish
@@ -18,6 +19,8 @@ button:
   view: Ko'rish
   edit: Tahrirlash
   delete: O'chirish
+  add: Qo'shish
+  remove: O'chirish
   clear_filters: Filtrlarni tozalash
 
 nav:
@@ -85,6 +88,7 @@ products:
   title: Mahsulotlar
   description: Mahsulotlarni boshqarish
   search_placeholder: Mahsulotlarni qidirish...
+  search_products: Mahsulotlarni qidirish...
   all_statuses: Barcha statuslar
   all_categories: Barcha kategoriyalar
   active: Faol
@@ -94,15 +98,24 @@ products:
   name: Nomi
   category: Kategoriya
   unit: O'lchov birligi
+  quantity: Miqdori
+  price: Narxi
+  total: Jami
   product_description: Tavsif
   enter_name: Mahsulot nomini kiriting
   enter_unit: O'lchov birligini kiriting
   enter_description: Tavsif kiriting
   select_category: Kategoriyani tanlang
   no_products: Mahsulotlar yo'q
+  no_products_found: Mahsulotlar topilmadi
   no_products_description: Sizda hali mahsulotlar yo'q. Birinchi mahsulotni yarating.
+  no_products_selected: Hech qanday mahsulot tanlanmagan
   add_first_product: Birinchi mahsulotni qo'shish
   edit_product: Mahsulotni tahrirlash
+  pick_products: Mahsulotlarni tanlash
+  selected_products: Tanlangan mahsulotlar
+  selected_count: "{count} ta tanlandi"
+  add_products_to_see_here: Mahsulotlarni bu yerda ko'rish uchun qo'shing
   name_placeholder: Mahsulot nomini kiriting
   unit_placeholder: "Masalan: dona, kg, litr"
   description_placeholder: Mahsulot tavsifini kiriting
@@ -228,6 +241,9 @@ invoices:
   start_date: Sana boshidan
   end_date: Sana oxirigacha
   create_invoice: Hujjat yaratish
+  create_new_invoice: Yangi hujjat yaratish
+  create_supplier_invoice: Yetkazib beruvchi hujjatini yaratish
+  add_products: Mahsulotlar qo'shish
   confirm_delete: Ushbu hujjatni o'chirishni xohlaysizmi?
 
 not-found: Topilmadi

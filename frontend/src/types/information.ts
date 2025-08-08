@@ -146,14 +146,12 @@ export interface IInvoiceItem {
   discount_amount?: number
   exchange_rate?: number
   product?: IProduct
-  createdAt?: string
-  updatedAt?: string
 }
 
 export interface IInvoice {
   id?: number
   invoice_number?: string
-  invoice_date: string
+  invoice_date?: string
   warehouse_id: number
   supplier_id?: number
   other_source_id?: number
@@ -164,7 +162,7 @@ export interface IInvoice {
   supplier?: ISupplier
   otherSource?: IOtherSource
   user?: IUser
-  items?: IInvoiceItem[]
+  products?: IInvoiceItem[]
   createdAt?: string
   updatedAt?: string
 }

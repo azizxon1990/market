@@ -4,6 +4,7 @@ import { http } from '~/utils/axios'
 
 interface ISuppliersState {
   suppliers: ISupplier[]
+  activeSuppliers?: ISupplier[]
   loading: boolean
   saving: boolean
 }
@@ -11,6 +12,7 @@ interface ISuppliersState {
 export const useSuppliersStore = defineStore('suppliers', {
   state: (): ISuppliersState => ({
     suppliers: [],
+    activeSuppliers: [],
     loading: false,
     saving: false,
   }),
@@ -81,7 +83,8 @@ export const useSuppliersStore = defineStore('suppliers', {
     async fetchActiveSuppliers() {
       try {
         const response = await http.get('/suppliers/active')
-        return response.data
+        this.activeSuppliers = response.data
+        return this.activeSuppliers
       }
       catch (error) {
         console.error('Error fetching active suppliers:', error)

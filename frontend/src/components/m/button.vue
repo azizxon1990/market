@@ -2,7 +2,7 @@
 import { Icon } from '@iconify/vue'
 
 interface Props {
-  color?: 'primary' | 'secondary' | 'tertiary'
+  color?: 'primary' | 'secondary' | 'tertiary' | 'transparent'
   loading?: boolean
   prependIcon?: string
   appendIcon?: string
@@ -27,12 +27,13 @@ const emit = defineEmits<{
 const buttonClasses = computed(() => {
   const baseClasses = props.iconButton
     ? 'flex items-center justify-center p-2 rounded-md font-medium transition-all duration-200 outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
-    : 'flex items-center justify-center gap-2 px-4 py-2.5 rounded-md font-medium transition-all duration-200 outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap'
+    : 'flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-all duration-200 outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap'
 
   const colorClasses = {
     primary: 'bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-500',
     secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
     tertiary: 'bg-transparent text-blue-500 border border-blue-500 hover:bg-blue-50 focus:ring-blue-500 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-900/20',
+    transparent: 'bg-transparent text-gray-900 hover:bg-gray-100 focus:ring-gray-500 dark:text-gray-100 dark:hover:bg-gray-800',
   }
 
   return `${baseClasses} ${colorClasses[props.color]}`

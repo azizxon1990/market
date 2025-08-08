@@ -87,6 +87,16 @@ function getColumnLabel(column: TableColumn): string {
   return column.label
 }
 
+function getNestedValue(obj: any, path: string): any {
+  return path.split('.').reduce((current, key) => {
+    return current && current[key] !== undefined ? current[key] : null
+  }, obj)
+}
+
+function getSlotName(columnKey: string): string {
+  return columnKey.replace(/\./g, '_')
+}
+
 // Lazy load components for better performance
 const MTablePagination = defineAsyncComponent(() => import('./table-pagination.vue'))
 </script>
@@ -116,7 +126,7 @@ const MTablePagination = defineAsyncComponent(() => import('./table-pagination.v
                 ]"
                 :style="{ width: column.width }"
               >
-                <slot :name="`header(${column.key})`" :column="column">
+                <slot :name="`header(${getSlotName(column.key)})`" :column="column">
                   {{ getColumnLabel(column) }}
                 </slot>
               </th>
@@ -149,19 +159,19 @@ const MTablePagination = defineAsyncComponent(() => import('./table-pagination.v
               >
                 <!-- Column slot by key name -->
                 <slot
-                  :name="column.key"
+                  :name="getSlotName(column.key)"
                   :row="row"
-                  :value="row[column.key]"
+                  :value="getNestedValue(row, column.key)"
                   :column="column"
                 >
                   <!-- Fallback to cell slot for backward compatibility -->
                   <slot
-                    :name="`cell(${column.key})`"
+                    :name="`cell(${getSlotName(column.key)})`"
                     :row="row"
-                    :value="row[column.key]"
+                    :value="getNestedValue(row, column.key)"
                     :column="column"
                   >
-                    {{ row[column.key] }}
+                    {{ getNestedValue(row, column.key) }}
                   </slot>
                 </slot>
               </td>

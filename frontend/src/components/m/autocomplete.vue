@@ -2,18 +2,14 @@
 import { Icon } from '@iconify/vue'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
-interface Option {
-  id: string | number
-  label: string
-  value: any
-  disabled?: boolean
-  [key: string]: any
-}
-
 interface Props {
   label?: string
   modelValue?: any
-  options?: Option[]
+  items?: any[]
+  itemValue?: string
+  itemText?: string
+  itemDisabled?: string
+  returnObject?: boolean
   size?: 'sm' | 'md' | 'lg'
   placeholder?: string
   disabled?: boolean
@@ -34,7 +30,11 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   label: '',
-  options: () => [],
+  items: () => [],
+  itemValue: 'value',
+  itemText: 'text',
+  itemDisabled: 'disabled',
+  returnObject: false,
   size: 'md',
   placeholder: '',
   disabled: false,
@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   'update:modelValue': [value: any]
   'search': [query: string]
-  'select': [option: Option]
+  'select': [item: any]
   'create': [value: string]
   'clear': []
   'focus': [event: FocusEvent]
@@ -71,28 +71,62 @@ const isOpen = ref(false)
 const searchQuery = ref('')
 const highlightedIndex = ref(-1)
 
+// Helper functions
+function getItemValue(item: any): any {
+  if (typeof item === 'object' && item !== null) {
+    return item[props.itemValue]
+  }
+  return item
+}
+
+function getItemText(item: any): string {
+  if (typeof item === 'object' && item !== null) {
+    return String(item[props.itemText] || item[props.itemValue] || item)
+  }
+  return String(item)
+}
+
+function getItemDisabled(item: any): boolean {
+  if (typeof item === 'object' && item !== null) {
+    return Boolean(item[props.itemDisabled])
+  }
+  return false
+}
+
 // Computed properties
-const selectedOptions = computed(() => {
+const selectedItems = computed(() => {
   if (!props.modelValue)
     return []
 
   if (props.multiple) {
-    return Array.isArray(props.modelValue)
-      ? props.options.filter(option => props.modelValue.includes(option.value))
-      : []
+    const values = Array.isArray(props.modelValue) ? props.modelValue : []
+    return props.items.filter((item) => {
+      const itemValue = getItemValue(item)
+      return props.returnObject
+        ? values.some(v => JSON.stringify(v) === JSON.stringify(itemValue))
+        : values.includes(itemValue)
+    })
   }
 
-  return props.options.filter(option => option.value === props.modelValue)
+  const selectedItem = props.items.find((item) => {
+    const itemValue = getItemValue(item)
+    return props.returnObject
+      ? JSON.stringify(props.modelValue) === JSON.stringify(itemValue)
+      : props.modelValue === itemValue
+  })
+
+  return selectedItem ? [selectedItem] : []
 })
 
-const filteredOptions = computed(() => {
+const filteredItems = computed(() => {
   if (!props.filterable || !searchQuery.value) {
-    return props.options.slice(0, props.maxDisplayItems)
+    return props.items.slice(0, props.maxDisplayItems)
   }
 
-  const filtered = props.options.filter(option =>
-    option.label.toLowerCase().includes(searchQuery.value.toLowerCase()),
-  )
+  const filtered = props.items.filter((item) => {
+    const text = getItemText(item)
+    return text.toLowerCase().includes(searchQuery.value.toLowerCase())
+  })
 
   return filtered.slice(0, props.maxDisplayItems)
 })
@@ -100,9 +134,10 @@ const filteredOptions = computed(() => {
 const showCustomOption = computed(() => {
   return props.allowCustomValue
     && searchQuery.value
-    && !filteredOptions.value.some(option =>
-      option.label.toLowerCase() === searchQuery.value.toLowerCase(),
-    )
+    && !filteredItems.value.some((item) => {
+      const text = getItemText(item)
+      return text.toLowerCase() === searchQuery.value.toLowerCase()
+    })
 })
 
 const sizeClasses = computed(() => {
@@ -114,7 +149,7 @@ const sizeClasses = computed(() => {
       dropdown: 'mt-1',
     },
     md: {
-      wrapper: 'h-10',
+      wrapper: 'h-10.5',
       input: 'px-3 text-sm',
       icon: 'px-3',
       dropdown: 'mt-1',
@@ -141,7 +176,7 @@ const classes = computed(() => ({
     sizeClasses.value.wrapper,
   ],
   input: [
-    'flex-1 border-none bg-transparent outline-none',
+    'w-full border-none bg-transparent outline-none',
     'text-gray-900 placeholder-gray-400',
     'dark:text-gray-100 dark:placeholder-gray-500',
     props.disabled && 'cursor-not-allowed',
@@ -160,14 +195,14 @@ const classes = computed(() => ({
     sizeClasses.value.dropdown,
   ],
   option: [
-    'flex cursor-pointer items-center px-3 py-2 text-sm transition-colors',
+    'flex cursor-pointer items-center px-4 py-2 text-sm transition-colors',
     'hover:bg-gray-50 dark:hover:bg-gray-700',
     'text-gray-900 dark:text-gray-100',
   ],
   optionSelected: 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300',
   optionHighlighted: 'bg-gray-100 dark:bg-gray-600',
   optionDisabled: 'opacity-50 cursor-not-allowed',
-  noData: 'px-3 py-2 text-sm text-gray-500 dark:text-gray-400',
+  noData: 'px-4 py-2 text-sm text-gray-500 dark:text-gray-400',
   multipleTag: [
     'inline-flex items-center gap-1 rounded bg-blue-100 px-2 py-1 text-xs',
     'text-blue-800 dark:bg-blue-900/20 dark:text-blue-300',
@@ -203,50 +238,82 @@ function closeDropdown() {
   // For filterable mode, restore the selected value when closing
   // For non-filterable mode, the value is already there
   if (props.filterable && !props.multiple && props.modelValue) {
-    const selectedOption = props.options.find(option => option.value === props.modelValue)
-    if (selectedOption) {
-      searchQuery.value = selectedOption.label
+    const selectedItem = props.items.find((item) => {
+      const itemValue = getItemValue(item)
+      return props.returnObject
+        ? JSON.stringify(props.modelValue) === JSON.stringify(itemValue)
+        : props.modelValue === itemValue
+    })
+    if (selectedItem) {
+      searchQuery.value = getItemText(selectedItem)
     }
   }
 }
 
-function selectOption(option: Option) {
-  if (option.disabled)
+function selectItem(item: any) {
+  if (getItemDisabled(item)) {
     return
+  }
+
+  const itemValue = getItemValue(item)
+  const returnValue = props.returnObject ? item : itemValue
 
   if (props.multiple) {
     const currentValues = Array.isArray(props.modelValue) ? [...props.modelValue] : []
-    const index = currentValues.indexOf(option.value)
 
-    if (index > -1) {
-      currentValues.splice(index, 1)
+    if (props.returnObject) {
+      const index = currentValues.findIndex(v => JSON.stringify(v) === JSON.stringify(returnValue))
+      if (index > -1) {
+        currentValues.splice(index, 1)
+      }
+      else {
+        currentValues.push(returnValue)
+      }
     }
     else {
-      currentValues.push(option.value)
+      const index = currentValues.indexOf(returnValue)
+      if (index > -1) {
+        currentValues.splice(index, 1)
+      }
+      else {
+        currentValues.push(returnValue)
+      }
     }
 
     emit('update:modelValue', currentValues)
   }
   else {
-    emit('update:modelValue', option.value)
-    // Always show the selected item label for both filterable and non-filterable modes
-    searchQuery.value = option.label
+    emit('update:modelValue', returnValue)
+    // Always show the selected item text for both filterable and non-filterable modes
+    searchQuery.value = getItemText(item)
     closeDropdown()
   }
 
-  emit('select', option)
+  emit('select', item)
 }
 
-function removeOption(option: Option) {
-  if (!props.multiple)
+function removeItem(item: any) {
+  if (!props.multiple) {
     return
+  }
 
+  const itemValue = getItemValue(item)
+  const removeValue = props.returnObject ? item : itemValue
   const currentValues = Array.isArray(props.modelValue) ? [...props.modelValue] : []
-  const index = currentValues.indexOf(option.value)
 
-  if (index > -1) {
-    currentValues.splice(index, 1)
-    emit('update:modelValue', currentValues)
+  if (props.returnObject) {
+    const index = currentValues.findIndex(v => JSON.stringify(v) === JSON.stringify(removeValue))
+    if (index > -1) {
+      currentValues.splice(index, 1)
+      emit('update:modelValue', currentValues)
+    }
+  }
+  else {
+    const index = currentValues.indexOf(removeValue)
+    if (index > -1) {
+      currentValues.splice(index, 1)
+      emit('update:modelValue', currentValues)
+    }
   }
 }
 
@@ -275,7 +342,7 @@ function handleKeydown(event: KeyboardEvent) {
     return
   }
 
-  const optionsCount = filteredOptions.value.length + (showCustomOption.value ? 1 : 0)
+  const optionsCount = filteredItems.value.length + (showCustomOption.value ? 1 : 0)
 
   switch (event.key) {
     case 'Escape':
@@ -295,8 +362,8 @@ function handleKeydown(event: KeyboardEvent) {
 
     case 'Enter':
       if (highlightedIndex.value >= 0) {
-        if (highlightedIndex.value < filteredOptions.value.length) {
-          selectOption(filteredOptions.value[highlightedIndex.value])
+        if (highlightedIndex.value < filteredItems.value.length) {
+          selectItem(filteredItems.value[highlightedIndex.value])
         }
         else if (showCustomOption.value) {
           createCustomValue()
@@ -337,27 +404,45 @@ function handleClickOutside(event: Event) {
   }
 }
 
-function isOptionSelected(option: Option): boolean {
+function isItemSelected(item: any): boolean {
+  const itemValue = getItemValue(item)
+
   if (props.multiple) {
-    return Array.isArray(props.modelValue) && props.modelValue.includes(option.value)
+    const values = Array.isArray(props.modelValue) ? props.modelValue : []
+    return props.returnObject
+      ? values.some(v => JSON.stringify(v) === JSON.stringify(item))
+      : values.includes(itemValue)
   }
-  return props.modelValue === option.value
+
+  return props.returnObject
+    ? JSON.stringify(props.modelValue) === JSON.stringify(item)
+    : props.modelValue === itemValue
 }
 
 // Watchers
 watch(() => props.modelValue, () => {
   if (!props.multiple) {
-    // Update search query with the selected option label for both filterable and non-filterable
-    const selectedOption = props.options.find(option => option.value === props.modelValue)
-    searchQuery.value = selectedOption ? selectedOption.label : ''
+    // Update search query with the selected item text for both filterable and non-filterable
+    const selectedItem = props.items.find((item) => {
+      const itemValue = getItemValue(item)
+      return props.returnObject
+        ? JSON.stringify(props.modelValue) === JSON.stringify(itemValue)
+        : props.modelValue === itemValue
+    })
+    searchQuery.value = selectedItem ? getItemText(selectedItem) : ''
   }
 })
 
-watch(() => props.options, () => {
-  // When options change (e.g., async loading), update display value if needed
+watch(() => props.items, () => {
+  // When items change (e.g., async loading), update display value if needed
   if (!props.multiple && props.modelValue) {
-    const selectedOption = props.options.find(option => option.value === props.modelValue)
-    searchQuery.value = selectedOption ? selectedOption.label : ''
+    const selectedItem = props.items.find((item) => {
+      const itemValue = getItemValue(item)
+      return props.returnObject
+        ? JSON.stringify(props.modelValue) === JSON.stringify(itemValue)
+        : props.modelValue === itemValue
+    })
+    searchQuery.value = selectedItem ? getItemText(selectedItem) : ''
   }
 }, { deep: true })
 
@@ -373,9 +458,14 @@ watch(isOpen, (newValue) => {
 // Lifecycle
 onMounted(() => {
   if (!props.multiple) {
-    // Initialize search query with the selected option label for both filterable and non-filterable
-    const selectedOption = props.options.find(option => option.value === props.modelValue)
-    searchQuery.value = selectedOption ? selectedOption.label : ''
+    // Initialize search query with the selected item text for both filterable and non-filterable
+    const selectedItem = props.items.find((item) => {
+      const itemValue = getItemValue(item)
+      return props.returnObject
+        ? JSON.stringify(props.modelValue) === JSON.stringify(itemValue)
+        : props.modelValue === itemValue
+    })
+    searchQuery.value = selectedItem ? getItemText(selectedItem) : ''
   }
 })
 
@@ -399,18 +489,18 @@ onUnmounted(() => {
       </div>
 
       <!-- Multiple Selection Tags -->
-      <div v-if="props.multiple && selectedOptions.length > 0" class="flex flex-wrap gap-1 px-2 py-1">
+      <div v-if="props.multiple && selectedItems.length > 0" class="flex flex-wrap gap-1 px-2 py-1">
         <span
-          v-for="option in selectedOptions"
-          :key="option.id"
+          v-for="item in selectedItems"
+          :key="getItemValue(item)"
           :class="classes.multipleTag"
         >
-          {{ option.label }}
+          {{ getItemText(item) }}
           <Icon
             icon="ri-close-line"
             class="h-3 w-3"
             :class="classes.tagRemove"
-            @click.stop="removeOption(option)"
+            @click.stop="removeItem(item)"
           />
         </span>
       </div>
@@ -420,7 +510,7 @@ onUnmounted(() => {
         ref="inputRef"
         v-model="searchQuery"
         :class="classes.input"
-        :placeholder="props.multiple && selectedOptions.length > 0 ? props.searchPlaceholder : props.placeholder"
+        :placeholder="props.multiple && selectedItems.length > 0 ? props.searchPlaceholder : props.placeholder"
         :disabled="props.disabled"
         :readonly="props.readonly || (!props.filterable && !props.multiple)"
         @input="handleInputChange"
@@ -436,7 +526,7 @@ onUnmounted(() => {
 
       <!-- Clear Button -->
       <div
-        v-else-if="props.clearable && (selectedOptions.length > 0 || searchQuery)"
+        v-else-if="props.clearable && (selectedItems.length > 0 || searchQuery)"
         :class="classes.icon"
         @click.stop="clearSelection"
       >
@@ -471,27 +561,27 @@ onUnmounted(() => {
       </div>
 
       <!-- Options -->
-      <template v-else-if="filteredOptions.length > 0">
+      <template v-else-if="filteredItems.length > 0">
         <div
-          v-for="(option, index) in filteredOptions"
-          :key="option.id"
+          v-for="(item, index) in filteredItems"
+          :key="getItemValue(item)"
           :class="[
             classes.option,
-            isOptionSelected(option) && classes.optionSelected,
+            isItemSelected(item) && classes.optionSelected,
             highlightedIndex === index && classes.optionHighlighted,
-            option.disabled && classes.optionDisabled,
+            getItemDisabled(item) && classes.optionDisabled,
           ]"
-          @click="selectOption(option)"
+          @click="selectItem(item)"
           @mouseenter="highlightedIndex = index"
         >
           <Icon
             v-if="props.multiple"
-            :icon="isOptionSelected(option) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"
+            :icon="isItemSelected(item) ? 'ri-checkbox-line' : 'ri-checkbox-blank-line'"
             class="mr-2 h-4 w-4"
           />
-          <span class="flex-1">{{ option.label }}</span>
+          <span class="flex-1">{{ getItemText(item) }}</span>
           <Icon
-            v-if="!props.multiple && isOptionSelected(option)"
+            v-if="!props.multiple && isItemSelected(item)"
             icon="ri-check-line"
             class="ml-2 h-4 w-4 text-blue-500"
           />
@@ -502,10 +592,10 @@ onUnmounted(() => {
           v-if="showCustomOption"
           :class="[
             classes.option,
-            highlightedIndex === filteredOptions.length && classes.optionHighlighted,
+            highlightedIndex === filteredItems.length && classes.optionHighlighted,
           ]"
           @click="createCustomValue"
-          @mouseenter="highlightedIndex = filteredOptions.length"
+          @mouseenter="highlightedIndex = filteredItems.length"
         >
           <Icon icon="ri-add-line" class="mr-2 h-4 w-4" />
           <span>{{ props.customValueText.replace('{query}', searchQuery) }}</span>

@@ -100,7 +100,7 @@ const getAllInvoices = async (req, res) => {
     }
 
     // Validate sort field to prevent SQL injection
-    const allowedSortFields = ['id', 'invoice_number', 'invoice_date', 'total_amount', 'createdAt', 'updatedAt'];
+    const allowedSortFields = ['id', 'invoice_number', 'invoice_date', 'total_amount'];
     const validSortField = allowedSortFields.includes(sortField) ? sortField : 'id';
     const validSortDirection = ['ASC', 'DESC'].includes(sortDirection.toUpperCase()) ? sortDirection.toUpperCase() : 'DESC';
 
@@ -129,7 +129,7 @@ const getAllInvoices = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'username', 'first_name', 'last_name']
+          attributes: ['id', 'username', 'full_name']
         }
       ],
       limit: limit,
