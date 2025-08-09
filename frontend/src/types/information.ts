@@ -127,8 +127,6 @@ export const defaultCostType: ICostType = {
 export interface IUser {
   id: number
   username: string
-  first_name?: string
-  last_name?: string
   full_name?: string
   organization_id?: number
   active?: boolean
@@ -162,7 +160,7 @@ export interface IInvoice {
   supplier?: ISupplier
   otherSource?: IOtherSource
   user?: IUser
-  products?: IInvoiceItem[]
+  products: IInvoiceItem[] | []
   createdAt?: string
   updatedAt?: string
 }
@@ -173,7 +171,7 @@ export const defaultInvoice: IInvoice = {
   supplier_id: undefined,
   other_source_id: undefined,
   description: '',
-  items: [],
+  products: [],
 }
 
 export const defaultInvoiceItem: IInvoiceItem = {

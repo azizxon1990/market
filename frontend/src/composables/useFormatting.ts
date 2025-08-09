@@ -22,7 +22,6 @@ export function useFormatting() {
    */
   function formatCurrency(value: number): string {
     return new Intl.NumberFormat('uz-UZ', {
-      style: 'currency',
       currency: 'UZS',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,

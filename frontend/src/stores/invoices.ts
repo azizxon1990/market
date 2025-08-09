@@ -80,12 +80,11 @@ export const useInvoicesStore = defineStore('invoices', () => {
 
     try {
       const response = await http.post('/invoices', {
-        date: invoiceData.invoice_date,
         warehouse_id: invoiceData.warehouse_id,
         supplier_id: invoiceData.supplier_id,
         other_source_id: invoiceData.other_source_id,
         commentary: invoiceData.description,
-        products: invoiceData.items?.map(item => ({
+        products: invoiceData.products?.map(item => ({
           product_id: item.product_id,
           quantity: item.quantity,
           price: item.price,
@@ -119,7 +118,7 @@ export const useInvoicesStore = defineStore('invoices', () => {
         supplier_id: invoiceData.supplier_id,
         other_source_id: invoiceData.other_source_id,
         commentary: invoiceData.description,
-        products: invoiceData.items?.map(item => ({
+        products: invoiceData.products?.map(item => ({
           product_id: item.product_id,
           quantity: item.quantity,
           price: item.price,

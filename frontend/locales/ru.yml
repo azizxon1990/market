@@ -202,7 +202,7 @@ common:
   price: Цена
   quantity: Количество
   total: Итого
-  currency: сум
+  currency: UZS
 
 pagination:
   showing: Показано

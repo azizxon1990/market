@@ -1,11 +1,13 @@
 # Invoice API Documentation
 
 ## Overview
+
 The Invoice API allows you to create, read, update, and delete invoices with their associated products. Each invoice must be associated with either a supplier or an other source, but not both.
 
 ## Models
 
 ### Invoice
+
 - `id`: Primary key (auto-increment)
 - `invoice_number`: Unique invoice number (auto-generated as INV-YYYYMMDD-XXXX)
 - `invoice_date`: Date of the invoice
@@ -17,6 +19,7 @@ The Invoice API allows you to create, read, update, and delete invoices with the
 - `user_id`: ID of the user who created the invoice
 
 ### InvoiceItem
+
 - `id`: Primary key (auto-increment)
 - `invoice_id`: ID of the parent invoice
 - `product_id`: ID of the product
@@ -29,9 +32,11 @@ The Invoice API allows you to create, read, update, and delete invoices with the
 ## API Endpoints
 
 ### GET /invoices
+
 Get all invoices with pagination, search, and filtering.
 
 **Query Parameters:**
+
 - `page`: Page number (default: 1)
 - `limit`: Items per page (default: 10)
 - `search`: Search in invoice number or description
@@ -43,6 +48,7 @@ Get all invoices with pagination, search, and filtering.
 - `sortDirection`: ASC or DESC (default: DESC)
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -67,8 +73,7 @@ Get all invoices with pagination, search, and filtering.
       "user": {
         "id": 1,
         "username": "admin",
-        "first_name": "John",
-        "last_name": "Doe"
+        "full_name": "John",
       }
     }
   ],
@@ -84,9 +89,11 @@ Get all invoices with pagination, search, and filtering.
 ```
 
 ### POST /invoices
+
 Create a new invoice with products.
 
 **Request Body:**
+
 ```json
 {
   "date": "2025-08-07",
@@ -116,6 +123,7 @@ Create a new invoice with products.
 ```
 
 **Validation Rules:**
+
 - `date`: Required, must be valid ISO 8601 date
 - `warehouse_id`: Required, must be valid warehouse ID
 - `supplier_id` OR `other_source_id`: One must be provided, but not both
@@ -126,6 +134,7 @@ Create a new invoice with products.
 - `commentary`: Optional, max 1000 characters
 
 **Response:**
+
 ```json
 {
   "message": "Invoice muvaffaqiyatli yaratildi",
@@ -150,8 +159,7 @@ Create a new invoice with products.
     "user": {
       "id": 1,
       "username": "admin",
-      "first_name": "John",
-      "last_name": "Doe"
+      "full_name": "Doe"
     },
     "items": [
       {
@@ -175,9 +183,11 @@ Create a new invoice with products.
 ```
 
 ### GET /invoices/:id
+
 Get a specific invoice by ID.
 
 **Response:**
+
 ```json
 {
   "id": 1,
@@ -200,8 +210,7 @@ Get a specific invoice by ID.
   "user": {
     "id": 1,
     "username": "admin",
-    "first_name": "John",
-    "last_name": "Doe"
+    "full_name": "John",
   },
   "items": [
     {
@@ -224,11 +233,13 @@ Get a specific invoice by ID.
 ```
 
 ### PUT /invoices/:id
+
 Update an existing invoice.
 
 **Request Body:** Same as POST /invoices
 
 **Response:**
+
 ```json
 {
   "message": "Invoice muvaffaqiyatli yangilandi",
@@ -239,9 +250,11 @@ Update an existing invoice.
 ```
 
 ### DELETE /invoices/:id
+
 Delete an invoice and its associated items.
 
 **Response:**
+
 ```json
 {
   "message": "Invoice muvaffaqiyatli o'chirildi"
@@ -261,6 +274,7 @@ Delete an invoice and its associated items.
 ## Error Handling
 
 The API returns appropriate HTTP status codes:
+
 - `200`: Success
 - `201`: Created
 - `400`: Bad Request (validation errors)
@@ -268,6 +282,7 @@ The API returns appropriate HTTP status codes:
 - `500`: Internal Server Error
 
 Error responses include descriptive messages in JSON format:
+
 ```json
 {
   "error": "Error message here",
@@ -280,6 +295,7 @@ Error responses include descriptive messages in JSON format:
 ## Authentication
 
 All endpoints require authentication. Include the JWT token in the Authorization header:
+
 ```
 Authorization: Bearer <your-jwt-token>
 ```

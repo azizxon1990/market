@@ -266,9 +266,7 @@ const createInvoice = async (req, res) => {
       invoiceItems.push(invoiceItem);
     }
 
-    await transaction.commit();
-
-    // Fetch the created invoice with all associations
+    // Fetch the created invoice with all associations before committing
     const createdInvoice = await Invoice.findByPk(invoice.id, {
       include: [
         {
@@ -289,7 +287,7 @@ const createInvoice = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'username', 'first_name', 'last_name']
+          attributes: ['id', 'username', 'full_name']
         },
         {
           model: InvoiceItem,
@@ -303,14 +301,19 @@ const createInvoice = async (req, res) => {
           ]
         }
       ]
-    });
+    }, { transaction });
+
+    await transaction.commit();
 
     res.status(201).json({
       message: 'Invoice muvaffaqiyatli yaratildi',
       data: createdInvoice
     });
   } catch (error) {
-    await transaction.rollback();
+    // Only rollback if transaction hasn't been committed yet
+    if (!transaction.finished) {
+      await transaction.rollback();
+    }
     res.status(500).json({ error: error.message });
   }
 };
@@ -337,7 +340,7 @@ const getInvoiceById = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'username', 'first_name', 'last_name']
+          attributes: ['id', 'username', 'full_name']
         },
         {
           model: InvoiceItem,
@@ -477,7 +480,7 @@ const updateInvoice = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'username', 'first_name', 'last_name']
+          attributes: ['id', 'username', 'full_name']
         },
         {
           model: InvoiceItem,

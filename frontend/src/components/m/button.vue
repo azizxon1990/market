@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { error } from 'node_modules/cypress/types/jquery'
 
 interface Props {
-  color?: 'primary' | 'secondary' | 'tertiary' | 'transparent'
+  color?: 'primary' | 'secondary' | 'tertiary' | 'transparent' | 'error'
   loading?: boolean
   prependIcon?: string
   appendIcon?: string
@@ -34,6 +35,7 @@ const buttonClasses = computed(() => {
     secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
     tertiary: 'bg-transparent text-blue-500 border border-blue-500 hover:bg-blue-50 focus:ring-blue-500 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-900/20',
     transparent: 'bg-transparent text-gray-900 hover:bg-gray-100 focus:ring-gray-500 dark:text-gray-100 dark:hover:bg-gray-800',
+    error: 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-500',
   }
 
   return `${baseClasses} ${colorClasses[props.color]}`

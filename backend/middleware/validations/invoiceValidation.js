@@ -1,12 +1,6 @@
 const { check, validationResult } = require('express-validator');
 
 const invoiceValidate = [
-  check('date')
-    .notEmpty()
-    .withMessage('Sana kiritilishi shart')
-    .isISO8601()
-    .withMessage('To\'g\'ri sana formatini kiriting (YYYY-MM-DD)'),
-
   check('commentary')
     .optional()
     .isLength({ max: 1000 })

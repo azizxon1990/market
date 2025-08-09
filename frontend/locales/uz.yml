@@ -71,16 +71,32 @@ auth:
 
 categories:
   title: Kategoriyalar
+  categories: Kategoriyalar
   description: Mahsulot kategoriyalarini boshqarish
   search_placeholder: Kategoriyalarni qidirish...
   all_statuses: Barcha statuslar
+  active: Faol
+  inactive: Nofaol
   add_category: Kategoriya qo'shish
   name: Nomi
+  status: Status
+  created_at: Yaratilgan sana
+  actions: Amallar
   enter_name: Kategoriya nomini kiriting
   no_categories: Kategoriyalar yo'q
   no_categories_description: Sizda hali kategoriyalar yo'q. Birinchi kategoriyani yarating.
   add_first_category: Birinchi kategoriyani qo'shish
+  showing: Ko'rsatilgan
+  to: dan
+  of: dan
+  results: natijalar
+  previous: Oldingi
+  next: Keyingi
   edit_category: Kategoriyani tahrirlash
+  cancel: Bekor qilish
+  create: Yaratish
+  update: Yangilash
+  all_categories: Barcha kategoriyalar
   name_placeholder: Kategoriya nomini kiriting
   description_placeholder: Kategoriya tavsifini kiriting
 
@@ -188,7 +204,7 @@ common:
   price: Narx
   quantity: Miqdor
   total: Jami
-  currency: so'm
+  currency: UZS
 
 pagination:
   showing: Ko'rsatilmoqda
@@ -216,6 +232,7 @@ table:
     price: Narx
     quantity: Miqdor
     category: Kategoriya
+    product: Mahsulot
     unit: O'lchov birligi
     supplier: Yetkazib beruvchi
     organization: Tashkilot
