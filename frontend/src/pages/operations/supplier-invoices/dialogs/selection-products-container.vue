@@ -80,9 +80,9 @@ function updatePrice(productId: number, price: number) {
     </div>
 
     <!-- Content -->
-    <div class="flex flex-1 flex-col overflow-hidden">
+    <div class="min-h-0 flex flex-1 flex-col overflow-hidden">
       <!-- Selected products cards -->
-      <div class="flex-1 overflow-auto p-3">
+      <div class="min-h-0 flex-1 overflow-y-auto p-3">
         <div
           v-if="products.length === 0"
           class="h-48 flex flex-col items-center justify-center text-center"
@@ -97,7 +97,7 @@ function updatePrice(productId: number, price: number) {
             {{ t('products.add_products_to_see_here') }}
           </p>
         </div>
-        <div v-else class="space-y-2">
+        <div v-else class="pb-2 space-y-2">
           <div
             v-for="product in selectionTableData"
             :key="product.id"
@@ -197,38 +197,94 @@ function updatePrice(productId: number, price: number) {
 </template>
 
 <style scoped>
-/* Custom scrollbar styling */
-.overflow-auto::-webkit-scrollbar {
-  width: 4px;
+/* Enhanced scrollbar styling with better performance */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
 }
 
-.overflow-auto::-webkit-scrollbar-track {
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 3px;
 }
 
-.overflow-auto::-webkit-scrollbar-thumb {
+.overflow-y-auto::-webkit-scrollbar-thumb {
   background: rgba(156, 163, 175, 0.5);
-  border-radius: 2px;
+  border-radius: 3px;
+  transition: background 0.2s ease;
 }
 
-.overflow-auto::-webkit-scrollbar-thumb:hover {
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: rgba(156, 163, 175, 0.7);
 }
 
-/* Card animations */
-.group:hover {
-  transform: translateY(-1px);
+/* Dark mode scrollbar */
+.dark .overflow-y-auto {
+  scrollbar-color: rgba(75, 85, 99, 0.6) transparent;
 }
 
-/* Focus states for inputs */
+.dark .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.6);
+}
+
+.dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(75, 85, 99, 0.8);
+}
+
+/* Smooth scrolling behavior */
+.overflow-y-auto {
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Performance optimizations for containers */
+.min-h-0 {
+  contain: layout style paint;
+}
+
+/* Card animations with better performance */
+.group {
+  transform: translateZ(0); /* Force hardware acceleration */
+  will-change: transform;
+}
+
+.group:hover {
+  transform: translateY(-1px) translateZ(0);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced focus states for inputs */
 .MInput:focus-within {
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
   border-color: rgb(59, 130, 246);
+  transition: all 0.2s ease;
 }
 
-/* Enhance button hover states */
+/* Button hover states with hardware acceleration */
+.MButton {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
 .MButton:hover {
-  transform: translateY(-0.5px);
-  transition: all 0.2s ease;
+  transform: translateY(-0.5px) translateZ(0);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Optimize container scroll performance */
+.min-h-0 {
+  contain: layout style paint;
+}
+
+/* Better scroll momentum on mobile */
+@media (max-width: 768px) {
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
 }
 </style>

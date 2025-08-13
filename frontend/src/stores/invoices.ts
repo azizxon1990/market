@@ -110,7 +110,7 @@ export const useInvoicesStore = defineStore('invoices', () => {
   async function updateInvoice(id: number, invoiceData: IInvoice): Promise<IInvoice | null> {
     loading.value = true
     error.value = null
-
+    alert('Update invoice function called')
     try {
       const response = await http.put(`/invoices/${id}`, {
         date: invoiceData.invoice_date,
@@ -120,7 +120,7 @@ export const useInvoicesStore = defineStore('invoices', () => {
         commentary: invoiceData.description,
         products: invoiceData.products?.map(item => ({
           product_id: item.product_id,
-          quantity: item.quantity,
+          quantity:   +item.quantity,
           price: item.price,
           discount_percentage: item.discount_percentage || 0,
           discount_amount: item.discount_amount || 0,

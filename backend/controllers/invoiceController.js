@@ -1,4 +1,4 @@
-const { Invoice, InvoiceItem, Product, Warehouse, Supplier, OtherSource, User, sequelize } = require('../models');
+const { Invoice, InvoiceItem, Product, Warehouse, Supplier, OtherSource, User, Category, sequelize } = require('../models');
 const { Op } = require('sequelize');
 
 // Generate unique invoice number
@@ -296,7 +296,14 @@ const createInvoice = async (req, res) => {
             {
               model: Product,
               as: 'product',
-              attributes: ['id', 'name', 'unit']
+              attributes: ['id', 'name', 'unit'],
+              include: [
+                {
+                  model: Category,
+                  as: 'category',
+                  attributes: ['id', 'name']
+                }
+              ]
             }
           ]
         }
@@ -349,7 +356,14 @@ const getInvoiceById = async (req, res) => {
             {
               model: Product,
               as: 'product',
-              attributes: ['id', 'name', 'unit']
+              attributes: ['id', 'name', 'unit'],
+              include: [
+                {
+                  model: Category,
+                  as: 'category',
+                  attributes: ['id', 'name']
+                }
+              ]
             }
           ]
         }
@@ -489,7 +503,14 @@ const updateInvoice = async (req, res) => {
             {
               model: Product,
               as: 'product',
-              attributes: ['id', 'name', 'unit']
+              attributes: ['id', 'name', 'unit'],
+              include: [
+                {
+                  model: Category,
+                  as: 'category',
+                  attributes: ['id', 'name']
+                }
+              ]
             }
           ]
         }

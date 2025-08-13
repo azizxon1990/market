@@ -257,7 +257,12 @@ invoices:
   create_invoice: Создать накладную
   create_new_invoice: Создать новую накладную
   create_supplier_invoice: Создать накладную поставщика
+  edit_supplier_invoice: Редактировать накладную поставщика
+  new_invoice: Новая накладная
   add_products: Добавить товары
+  description: Описание
+  no_products_added: Товары не добавлены
+  click_add_products_to_start: Нажмите кнопку добавления товаров для начала
   confirm_delete: Вы уверены, что хотите удалить эту накладную?
 
 not-found: Не найден

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useInvoicesStore } from '~/stores/invoices'
 import { useFormatting } from '~/composables/useFormatting'
+import { useInvoicesStore } from '~/stores/invoices'
 import { DEFAULT_ITEMS_PER_PAGE } from '~/utils/constants'
 
 defineOptions({
@@ -91,6 +91,32 @@ function createNewInvoice() {
   router.push('/operations/supplier-invoices/create')
 }
 
+function editInvoice(invoiceId: string | number | undefined) {
+  if (!invoiceId)
+    return
+  // Navigate to edit invoice page
+  router.push(`/operations/supplier-invoices/update/${invoiceId}`)
+}
+
+async function deleteInvoice(invoiceId: string | number | undefined) {
+  if (!invoiceId)
+    return
+
+  // eslint-disable-next-line no-alert
+  if (confirm('Are you sure you want to delete this invoice?')) {
+    try {
+      const success = await invoicesStore.deleteInvoice(Number(invoiceId))
+      if (success) {
+        // Refresh the list
+        await fetchInvoices()
+      }
+    }
+    catch (error) {
+      console.error('Error deleting invoice:', error)
+    }
+  }
+}
+
 // Lifecycle
 onMounted(async () => {
   await Promise.all([
@@ -136,9 +162,23 @@ onMounted(async () => {
       @page-change="onPageChange"
     >
       <template #total_amount="{ row }">
-        <span class="font-medium text-gray-900 dark:text-white">
+        <span class="text-gray-900 font-medium dark:text-white">
           {{ formatCurrency(row.total_amount || 0) }}
         </span>
+      </template>
+      <template #actions="{ row }">
+        <div class="flex items-center gap-1">
+          <MButton
+            variant="text" color="primary" icon-button icon="ri-edit-line"
+            :title="$t('button.edit')"
+            @click="editInvoice(row.id)"
+          />
+          <MButton
+            variant="text" color="error" icon-button icon="ri-delete-bin-5-line"
+            :title="$t('button.delete')"
+            @click="deleteInvoice(row.id)"
+          />
+        </div>
       </template>
     </MDataTable>
   </MainPage>

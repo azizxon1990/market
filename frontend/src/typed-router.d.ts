@@ -43,5 +43,6 @@ declare module 'vue-router/auto-routes' {
     '/operations/supplier-invoices/dialogs/selection-products': RouteRecordInfo<'/operations/supplier-invoices/dialogs/selection-products', '/operations/supplier-invoices/dialogs/selection-products', Record<never, never>, Record<never, never>>,
     '/operations/supplier-invoices/dialogs/selection-products-container': RouteRecordInfo<'/operations/supplier-invoices/dialogs/selection-products-container', '/operations/supplier-invoices/dialogs/selection-products-container', Record<never, never>, Record<never, never>>,
     '/operations/supplier-invoices/input': RouteRecordInfo<'/operations/supplier-invoices/input', '/operations/supplier-invoices/input', Record<never, never>, Record<never, never>>,
+    '/operations/supplier-invoices/update/[id]': RouteRecordInfo<'/operations/supplier-invoices/update/[id]', '/operations/supplier-invoices/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
   }
 }

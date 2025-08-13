@@ -260,7 +260,12 @@ invoices:
   create_invoice: Hujjat yaratish
   create_new_invoice: Yangi hujjat yaratish
   create_supplier_invoice: Yetkazib beruvchi hujjatini yaratish
+  edit_supplier_invoice: Yetkazib beruvchi hujjatini tahrirlash
+  new_invoice: Yangi hujjat
   add_products: Mahsulotlar qo'shish
+  description: Tavsif
+  no_products_added: Hech qanday mahsulot qo'shilmagan
+  click_add_products_to_start: Boshlash uchun mahsulotlar qo'shish tugmasini bosing
   confirm_delete: Ushbu hujjatni o'chirishni xohlaysizmi?
 
 not-found: Topilmadi
